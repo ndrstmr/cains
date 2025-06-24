@@ -1,0 +1,19 @@
+{
+  "@@locale": "en",
+  "appTitle": "CAINS App",
+  "@appTitle": {
+    "description": "The title of the application"
+  },
+  "loginButton": "Login",
+  "@loginButton": {
+    "description": "Label for the login button"
+  },
+  "registerButton": "Register",
+  "@registerButton": {
+    "description": "Label for the register button"
+  },
+  "homePageTitle": "Home",
+  "@homePageTitle": {
+    "description": "Title for the Home Page"
+  }
+}
