@@ -4,17 +4,20 @@
 enum VocabularySourceType {
   /// Added by the user manually.
   custom,
+
   /// Added via AI suggestion.
-  ai_added,
+  aiAdded,
+
   /// Added from scanned text.
-  scanned_text,
+  scannedText,
 }
 
 /// Represents a single vocabulary item.
 class VocabularyItem {
   final String id;
   final String word;
-  final Map<String, String> definitions; // e.g., {'de': '...', 'en': '...', 'es': '...'}
+  final Map<String, String>
+  definitions; // e.g., {'de': '...', 'en': '...', 'es': '...'}
   final List<String>? synonyms;
   final List<String>? collocations;
   final List<String>? exampleSentences;
@@ -40,10 +43,18 @@ class VocabularyItem {
       id: json['id'] as String,
       word: json['word'] as String,
       definitions: Map<String, String>.from(json['definitions'] as Map),
-      synonyms: (json['synonyms'] as List<dynamic>?)?.map((e) => e as String).toList(),
-      collocations: (json['collocations'] as List<dynamic>?)?.map((e) => e as String).toList(),
-      exampleSentences: (json['exampleSentences'] as List<dynamic>?)?.map((e) => e as String).toList(),
-      sourceType: VocabularySourceType.values.byName(json['sourceType'] as String),
+      synonyms: (json['synonyms'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList(),
+      collocations: (json['collocations'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList(),
+      exampleSentences: (json['exampleSentences'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList(),
+      sourceType: VocabularySourceType.values.byName(
+        json['sourceType'] as String,
+      ),
     );
   }
 

@@ -27,44 +27,53 @@ final themeModeProvider = StateProvider<ThemeMode>((ref) => ThemeMode.system);
 /// Contains the application's theme configurations.
 class AppTheme {
   static ThemeData get lightTheme {
+    final baseColorScheme = ColorScheme.fromSeed(
+      seedColor: AppColors.primary,
+      primary: AppColors.primary,
+      secondary: AppColors.secondary,
+      tertiary: AppColors.tertiary,
+      error: AppColors.error,
+      brightness: Brightness.light,
+      // Avoid direct 'surface' and 'background' here if they cause issues with seed generation logic for M3
+    );
     return ThemeData(
       useMaterial3: true,
       brightness: Brightness.light,
-      colorScheme: ColorScheme.fromSeed(
-        seedColor: AppColors.primary,
-        primary: AppColors.primary,
-        secondary: AppColors.secondary,
-        tertiary: AppColors.tertiary,
-        surface: AppColors.surfaceLight,
-        background: AppColors.backgroundLight,
-        error: AppColors.error,
-        brightness: Brightness.light,
+      colorScheme: baseColorScheme.copyWith(
+        // Override specific derived colors if necessary.
+        // For Material 3, 'surface' and 'background' are often nuanced.
+        // Let's use the defined surfaceLight for surface.
+        surface: AppColors.surfaceLight, // The main "card" color
+        // 'background' parameter removed from copyWith to avoid deprecation warning
       ),
-      textTheme: GoogleFonts.interTextTheme(
-        ThemeData.light().textTheme,
-      ),
+      scaffoldBackgroundColor:
+          AppColors.backgroundLight, // Explicitly set overall background
+      textTheme: GoogleFonts.interTextTheme(ThemeData.light().textTheme),
       // Add other theme properties as needed
       // e.g., appBarTheme, buttonTheme, etc.
     );
   }
 
   static ThemeData get darkTheme {
+    final baseColorScheme = ColorScheme.fromSeed(
+      seedColor: AppColors.primary, // Or a different seed for dark if desired
+      primary: AppColors.primary,
+      secondary: AppColors.secondary,
+      tertiary: AppColors.tertiary,
+      error: AppColors.error,
+      brightness: Brightness.dark,
+    );
     return ThemeData(
       useMaterial3: true,
       brightness: Brightness.dark,
-      colorScheme: ColorScheme.fromSeed(
-        seedColor: AppColors.primary, // Or a different seed for dark if desired
-        primary: AppColors.primary,
-        secondary: AppColors.secondary,
-        tertiary: AppColors.tertiary,
-        surface: AppColors.surfaceDark,
-        background: AppColors.backgroundDark,
-        error: AppColors.error,
-        brightness: Brightness.dark,
+      colorScheme: baseColorScheme.copyWith(
+        surface: AppColors
+            .surfaceDark, // Use defined surfaceDark for component surfaces
+        // 'background' parameter removed from copyWith to avoid deprecation warning
       ),
-      textTheme: GoogleFonts.interTextTheme(
-        ThemeData.dark().textTheme,
-      ),
+      scaffoldBackgroundColor:
+          AppColors.backgroundDark, // Explicitly set overall background
+      textTheme: GoogleFonts.interTextTheme(ThemeData.dark().textTheme),
       // Add other theme properties as needed
     );
   }

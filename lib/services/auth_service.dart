@@ -19,18 +19,32 @@ class AuthService {
   Stream<User?> get authStateChanges => Stream.value(null); // Placeholder
 
   /// Placeholder for sign in method.
-  Future<UserCredential?> signInWithEmailAndPassword(String email, String password) async {
+  Future<UserCredential?> signInWithEmailAndPassword(
+    String email,
+    String password,
+  ) async {
     // TODO: Implement actual sign-in logic with FirebaseAuth
-    print('AuthService: Attempting to sign in with email: $email'); // ignore: avoid_print
-    await Future.delayed(const Duration(seconds: 1)); // Simulate network request
+    print(
+      'AuthService: Attempting to sign in with email: $email',
+    ); // ignore: avoid_print
+    await Future.delayed(
+      const Duration(seconds: 1),
+    ); // Simulate network request
     return null; // Placeholder
   }
 
   /// Placeholder for registration method.
-  Future<UserCredential?> createUserWithEmailAndPassword(String email, String password) async {
+  Future<UserCredential?> createUserWithEmailAndPassword(
+    String email,
+    String password,
+  ) async {
     // TODO: Implement actual registration logic with FirebaseAuth
-    print('AuthService: Attempting to register with email: $email'); // ignore: avoid_print
-    await Future.delayed(const Duration(seconds: 1)); // Simulate network request
+    print(
+      'AuthService: Attempting to register with email: $email',
+    ); // ignore: avoid_print
+    await Future.delayed(
+      const Duration(seconds: 1),
+    ); // Simulate network request
     return null; // Placeholder
   }
 
@@ -38,7 +52,9 @@ class AuthService {
   Future<void> signOut() async {
     // TODO: Implement actual sign-out logic with FirebaseAuth
     print('AuthService: Attempting to sign out'); // ignore: avoid_print
-    await Future.delayed(const Duration(seconds: 1)); // Simulate network request
+    await Future.delayed(
+      const Duration(seconds: 1),
+    ); // Simulate network request
   }
 
   // TODO: Add other auth methods as needed (e.g., password reset, social login)

@@ -17,22 +17,35 @@ class FirestoreService {
   /// Placeholder for adding a vocabulary item.
   Future<void> addVocabularyItem(Map<String, dynamic> itemData) async {
     // TODO: Implement actual logic to add data to Firestore
-    print('FirestoreService: Attempting to add vocabulary item: $itemData'); // ignore: avoid_print
-    await Future.delayed(const Duration(seconds: 1)); // Simulate network request
+    print(
+      'FirestoreService: Attempting to add vocabulary item: $itemData',
+    ); // ignore: avoid_print
+    await Future.delayed(
+      const Duration(seconds: 1),
+    ); // Simulate network request
   }
 
   /// Placeholder for getting vocabulary items.
   Stream<QuerySnapshot> getVocabularyItems() {
     // TODO: Implement actual logic to stream data from Firestore
-    print('FirestoreService: Attempting to get vocabulary items'); // ignore: avoid_print
+    print(
+      'FirestoreService: Attempting to get vocabulary items',
+    ); // ignore: avoid_print
     return Stream.empty(); // Placeholder
   }
 
   /// Placeholder for updating user progress.
-  Future<void> updateUserProgress(String userId, Map<String, dynamic> progressData) async {
+  Future<void> updateUserProgress(
+    String userId,
+    Map<String, dynamic> progressData,
+  ) async {
     // TODO: Implement actual logic to update user data in Firestore
-    print('FirestoreService: Attempting to update user progress for $userId: $progressData'); // ignore: avoid_print
-    await Future.delayed(const Duration(seconds: 1)); // Simulate network request
+    print(
+      'FirestoreService: Attempting to update user progress for $userId: $progressData',
+    ); // ignore: avoid_print
+    await Future.delayed(
+      const Duration(seconds: 1),
+    ); // Simulate network request
   }
 
   // TODO: Add other Firestore methods as needed for challenges, user settings, etc.

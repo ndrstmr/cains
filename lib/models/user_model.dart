@@ -11,11 +11,7 @@ class UserModel {
   ///
   /// Requires [uid].
   /// [email] and [displayName] are optional.
-  const UserModel({
-    required this.uid,
-    this.email,
-    this.displayName,
-  });
+  const UserModel({required this.uid, this.email, this.displayName});
 
   /// Creates a [UserModel] from a JSON object.
   ///
@@ -32,19 +28,11 @@ class UserModel {
   ///
   /// Useful for serializing data to Firestore.
   Map<String, dynamic> toJson() {
-    return {
-      'uid': uid,
-      'email': email,
-      'displayName': displayName,
-    };
+    return {'uid': uid, 'email': email, 'displayName': displayName};
   }
 
   /// Creates a copy of this [UserModel] but with the given fields replaced with the new values.
-  UserModel copyWith({
-    String? uid,
-    String? email,
-    String? displayName,
-  }) {
+  UserModel copyWith({String? uid, String? email, String? displayName}) {
     return UserModel(
       uid: uid ?? this.uid,
       email: email ?? this.email,

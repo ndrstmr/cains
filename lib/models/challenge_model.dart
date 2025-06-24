@@ -4,8 +4,10 @@
 enum ChallengeStatus {
   /// The challenge is open and not yet completed.
   open,
+
   /// The challenge has been successfully completed.
   completed,
+
   /// The challenge was failed or expired.
   failed,
 }
