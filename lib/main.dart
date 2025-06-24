@@ -1,28 +1,26 @@
+// lib/main.dart
 import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart'; // Firebase Core
-import 'package:flutter_riverpod/flutter_riverpod.dart'; // Riverpod
-import 'package:myapp/navigation/app_router.dart'; // GoRouter configuration
-import 'package:myapp/theme/app_theme.dart'; // AppTheme and themeModeProvider
-import 'package:flutter_localizations/flutter_localizations.dart'; // Localizations
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:myapp/navigation/app_router.dart'; // Provides goRouterProvider
+import 'package:myapp/theme/app_theme.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:myapp/l10n/app_localizations.dart'; // Generated localizations
 
 Future<void> main() async {
-  // Made main async for potential Firebase init
   WidgetsFlutterBinding.ensureInitialized();
 
-  // TODO: Initialize Firebase here (actual initialization)
-  // For now, this is just a placeholder print statement.
-  // In a real app, you would call:
+  // Actual Firebase initialization should be configured by the developer
+  // with their Firebase project credentials.
+  // For this prototype, we assume it would be initialized here.
+  // Example:
   // await Firebase.initializeApp(
-  //   options: DefaultFirebaseOptions.currentPlatform, // If using firebase_cli
+  //   options: DefaultFirebaseOptions.currentPlatform, // From firebase_flutter_cli
   // );
-  print(
-    "Firebase Initialization Placeholder: Call Firebase.initializeApp() here.",
-  );
+  print("Firebase Initialization Placeholder: Ensure Firebase is properly initialized for Auth to work.");
 
   runApp(
     const ProviderScope(
-      // Wrap with ProviderScope for Riverpod
       child: MyApp(),
     ),
   );
@@ -33,21 +31,20 @@ class MyApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final themeMode = ref.watch(
-      themeModeProvider,
-    ); // Watch the themeModeProvider
+    final themeMode = ref.watch(themeModeProvider);
+    final goRouter = ref.watch(goRouterProvider); // Watch the goRouterProvider
 
     return MaterialApp.router(
-      title:
-          'CAINS App', // This will be overridden by AppLocalizations.appTitle if used
-      debugShowCheckedModeBanner: false, // Optional: hide debug banner
+      title: 'CAINS App', // Will be overridden by onGenerateTitle if implemented
+      debugShowCheckedModeBanner: false,
+
       // Theme configuration
       themeMode: themeMode,
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
 
       // Router configuration
-      routerConfig: AppRouter.router,
+      routerConfig: goRouter, // Use the goRouter instance from the provider
 
       // Localization configuration
       localizationsDelegates: const [
@@ -57,12 +54,12 @@ class MyApp extends ConsumerWidget {
         GlobalCupertinoLocalizations.delegate,
       ],
       supportedLocales: AppLocalizations.supportedLocales,
-      // Optionally, set a fallback locale or locale resolution callback
-      // locale: const Locale('de'), // Example: Force German locale
 
-      // TODO: Potentially use onGenerateTitle to use AppLocalizations.appTitle
+      // TODO: Implement onGenerateTitle for localized app title
       // onGenerateTitle: (BuildContext context) {
-      //   return AppLocalizations.of(context)?.appTitle ?? 'CAINS App';
+      //   // Ensure AppLocalizations is available
+      //   // return AppLocalizations.of(context)?.appTitle ?? 'CAINS App';
+      //   return 'CAINS App'; // Placeholder
       // },
     );
   }
