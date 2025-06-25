@@ -147,6 +147,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get noTopicsAvailableMessage => 'No topics available yet. Check back later!';
 
   @override
+=======
+  String get noTopicsAvailableMessage => 'No topics available yet. Check back later!';
+
+  @override
   String get errorLoadingTopicsMessage => 'Could not load topics. Please try again.';
 
   @override
