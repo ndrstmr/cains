@@ -333,6 +333,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Could not load topics. Please try again.'**
   String get errorLoadingTopicsMessage;
+
+  /// Title for the Word Grid game screen
+  ///
+  /// In en, this message translates to:
+  /// **'Word Grid'**
+  String get wordGridScreenTitle;
+
+  /// Prefix text displayed before the currently selected word in the grid game
+  ///
+  /// In en, this message translates to:
+  /// **'Selected: '**
+  String get selectedWordPrefix;
+
+  /// Placeholder text shown before the grid is loaded or if it's empty
+  ///
+  /// In en, this message translates to:
+  /// **'Grid will appear here...'**
+  String get gridLoadingPlaceholder;
+
+  /// Prefix text displayed before the list of found words in the grid game
+  ///
+  /// In en, this message translates to:
+  /// **'Found Words: '**
+  String get foundWordsPrefix;
+
+  /// Tooltip for a button that resets the current word selection in the grid game
+  ///
+  /// In en, this message translates to:
+  /// **'Reset Selection'**
+  String get resetSelectionTooltip;
+
+  /// Feedback message when a word is successfully found.
+  ///
+  /// In en, this message translates to:
+  /// **'Word Found: {word}!'**
+  String feedbackWordFound(String word);
+
+  /// Feedback message when a word selected was already found.
+  ///
+  /// In en, this message translates to:
+  /// **'Already found: {word}'**
+  String feedbackWordAlreadyFound(String word);
+
+  /// Feedback message when the selected letters do not form a valid hidden word.
+  ///
+  /// In en, this message translates to:
+  /// **'Not a valid word: {word}'**
+  String feedbackWordNotValid(String word);
+
+  /// Feedback message if the word selection path is not a straight line.
+  ///
+  /// In en, this message translates to:
+  /// **'Selection must be a straight line.'**
+  String get feedbackSelectionNotStraight;
 }
 
 class _AppLocalizationsDelegate

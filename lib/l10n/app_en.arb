@@ -83,5 +83,39 @@
   "noTopicsAvailableMessage": "No topics available yet. Check back later!",
   "@noTopicsAvailableMessage": { "description": "Message displayed on HomeScreen when no topics are found" },
   "errorLoadingTopicsMessage": "Could not load topics. Please try again.",
-  "@errorLoadingTopicsMessage": { "description": "Message displayed on HomeScreen when topics fail to load" }
+  "@errorLoadingTopicsMessage": { "description": "Message displayed on HomeScreen when topics fail to load" },
+
+  "wordGridScreenTitle": "Word Grid",
+  "@wordGridScreenTitle": { "description": "Title for the Word Grid game screen" },
+  "selectedWordPrefix": "Selected: ",
+  "@selectedWordPrefix": { "description": "Prefix text displayed before the currently selected word in the grid game" },
+  "gridLoadingPlaceholder": "Grid will appear here...",
+  "@gridLoadingPlaceholder": { "description": "Placeholder text shown before the grid is loaded or if it's empty" },
+  "foundWordsPrefix": "Found Words: ",
+  "@foundWordsPrefix": { "description": "Prefix text displayed before the list of found words in the grid game" },
+  "resetSelectionTooltip": "Reset Selection",
+  "@resetSelectionTooltip": { "description": "Tooltip for a button that resets the current word selection in the grid game" },
+  "feedbackWordFound": "Word Found: {word}!",
+  "@feedbackWordFound": {
+    "description": "Feedback message when a word is successfully found.",
+    "placeholders": {
+      "word": { "type": "String", "example": "HELLO" }
+    }
+  },
+  "feedbackWordAlreadyFound": "Already found: {word}",
+  "@feedbackWordAlreadyFound": {
+    "description": "Feedback message when a word selected was already found.",
+    "placeholders": {
+      "word": { "type": "String", "example": "HELLO" }
+    }
+  },
+  "feedbackWordNotValid": "Not a valid word: {word}",
+  "@feedbackWordNotValid": {
+    "description": "Feedback message when the selected letters do not form a valid hidden word.",
+    "placeholders": {
+      "word": { "type": "String", "example": "XYZ" }
+    }
+  },
+  "feedbackSelectionNotStraight": "Selection must be a straight line.",
+  "@feedbackSelectionNotStraight": { "description": "Feedback message if the word selection path is not a straight line." }
 }

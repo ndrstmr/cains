@@ -132,4 +132,38 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get errorLoadingTopicsMessage =>
       'Themen konnten nicht geladen werden. Bitte versuchen Sie es erneut.';
+
+  @override
+  String get wordGridScreenTitle => 'Wortgitter';
+
+  @override
+  String get selectedWordPrefix => 'Ausgewählt: ';
+
+  @override
+  String get gridLoadingPlaceholder => 'Gitter erscheint hier...';
+
+  @override
+  String get foundWordsPrefix => 'Gefundene Wörter: ';
+
+  @override
+  String get resetSelectionTooltip => 'Auswahl zurücksetzen';
+
+  @override
+  String feedbackWordFound(String word) {
+    return 'Wort gefunden: $word!';
+  }
+
+  @override
+  String feedbackWordAlreadyFound(String word) {
+    return 'Bereits gefunden: $word';
+  }
+
+  @override
+  String feedbackWordNotValid(String word) {
+    return 'Ungültiges Wort: $word';
+  }
+
+  @override
+  String get feedbackSelectionNotStraight =>
+      'Auswahl muss eine gerade Linie sein.';
 }

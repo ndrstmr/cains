@@ -40,5 +40,15 @@
   "switchToLightModeLabel": "Heller Modus",
   "switchToDarkModeLabel": "Dunkler Modus",
   "noTopicsAvailableMessage": "Derzeit sind keine Themen verfügbar. Schauen Sie später noch einmal vorbei!",
-  "errorLoadingTopicsMessage": "Themen konnten nicht geladen werden. Bitte versuchen Sie es erneut."
+  "errorLoadingTopicsMessage": "Themen konnten nicht geladen werden. Bitte versuchen Sie es erneut.",
+
+  "wordGridScreenTitle": "Wortgitter",
+  "selectedWordPrefix": "Ausgewählt: ",
+  "gridLoadingPlaceholder": "Gitter erscheint hier...",
+  "foundWordsPrefix": "Gefundene Wörter: ",
+  "resetSelectionTooltip": "Auswahl zurücksetzen",
+  "feedbackWordFound": "Wort gefunden: {word}!",
+  "feedbackWordAlreadyFound": "Bereits gefunden: {word}",
+  "feedbackWordNotValid": "Ungültiges Wort: {word}",
+  "feedbackSelectionNotStraight": "Auswahl muss eine gerade Linie sein."
 }

@@ -133,4 +133,38 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get errorLoadingTopicsMessage =>
       'No se pudieron cargar los temas. Inténtalo de nuevo.';
+
+  @override
+  String get wordGridScreenTitle => 'Sopa de Letras';
+
+  @override
+  String get selectedWordPrefix => 'Seleccionado: ';
+
+  @override
+  String get gridLoadingPlaceholder => 'La cuadrícula aparecerá aquí...';
+
+  @override
+  String get foundWordsPrefix => 'Palabras encontradas: ';
+
+  @override
+  String get resetSelectionTooltip => 'Restablecer selección';
+
+  @override
+  String feedbackWordFound(String word) {
+    return '¡Palabra encontrada: $word!';
+  }
+
+  @override
+  String feedbackWordAlreadyFound(String word) {
+    return 'Ya encontrada: $word';
+  }
+
+  @override
+  String feedbackWordNotValid(String word) {
+    return 'Palabra no válida: $word';
+  }
+
+  @override
+  String get feedbackSelectionNotStraight =>
+      'La selección debe ser una línea recta.';
 }

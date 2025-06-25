@@ -9,7 +9,7 @@ import 'package:myapp/theme/app_theme.dart'; // For themeModeProvider
 import 'package:myapp/providers/topic_provider.dart';
 import 'package:myapp/widgets/topic_card.dart';
 import 'package:flutter/foundation.dart'; // For kDebugMode
-// import 'package:myapp/navigation/app_router.dart'; // For AppRoute enum if needed for direct navigation
+import 'package:myapp/navigation/app_router.dart'; // For AppRoute enum
 
 // Enum for settings actions
 enum SettingsAction { toggleTheme, logout }
@@ -176,15 +176,10 @@ class HomeScreen extends ConsumerWidget {
               return TopicCard(
                 topic: topic,
                 onTap: () {
-                  // TODO: Implement navigation to topic detail screen or action
-                  print('Tapped on topic: ${topic.id}');
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(
-                        'Tapped on: ${_getLocalizedTitle(context, topic)}',
-                      ),
-                    ),
-                  );
+                  // Navigate to WordGridScreen
+                  // For now, WordGridScreen uses a hardcoded grid.
+                  // Later, this could pass topic.id or specific grid data.
+                  GoRouter.of(context).go(AppRoute.wordgrid.path);
                 },
               );
             },

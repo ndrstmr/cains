@@ -129,4 +129,38 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get errorLoadingTopicsMessage =>
       'Could not load topics. Please try again.';
+
+  @override
+  String get wordGridScreenTitle => 'Word Grid';
+
+  @override
+  String get selectedWordPrefix => 'Selected: ';
+
+  @override
+  String get gridLoadingPlaceholder => 'Grid will appear here...';
+
+  @override
+  String get foundWordsPrefix => 'Found Words: ';
+
+  @override
+  String get resetSelectionTooltip => 'Reset Selection';
+
+  @override
+  String feedbackWordFound(String word) {
+    return 'Word Found: $word!';
+  }
+
+  @override
+  String feedbackWordAlreadyFound(String word) {
+    return 'Already found: $word';
+  }
+
+  @override
+  String feedbackWordNotValid(String word) {
+    return 'Not a valid word: $word';
+  }
+
+  @override
+  String get feedbackSelectionNotStraight =>
+      'Selection must be a straight line.';
 }
