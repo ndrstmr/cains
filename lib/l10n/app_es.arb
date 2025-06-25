@@ -4,7 +4,14 @@
   "loginButton": "Iniciar sesión",
   "registerButton": "Registrarse",
   "homePageTitle": "Inicio",
-
+  "pointsLabel": "{points, plural, =0{0 puntos} one{1 punto} other{{points} puntos}}",
+  "@pointsLabel": {
+    "description": "Label displaying the user's points, with pluralization.",
+    "placeholders": {
+      "points": { "type": "int", "example": "100" }
+    }
+  },
+  
   "loginScreenTitle": "Iniciar sesión",
   "emailFieldLabel": "Correo electrónico",
   "emailFieldHint": "Ingrese su correo electrónico",
@@ -34,6 +41,7 @@
   "languageMenuTooltip": "Opciones de idioma",
   "settingsMenuTooltip": "Configuración",
   "logoutDialogTitle": "Confirmar cierre de sesión",
+  "@logoutDialogTitle": {"description": "Title for the logout confirmation dialog."},
   "logoutDialogContent": "¿Está seguro de que desea cerrar sesión?",
   "cancelButtonLabel": "Cancelar",
   "logoutButtonLabel": "Cerrar sesión",
@@ -41,6 +49,14 @@
   "switchToDarkModeLabel": "Modo oscuro",
   "noTopicsAvailableMessage": "No hay temas disponibles todavía. ¡Vuelve más tarde!",
   "errorLoadingTopicsMessage": "No se pudieron cargar los temas. Inténtalo de nuevo.",
+  "overallProgressLabel": "Progreso general",
+  "challengeStatusOpen": "Abierto",
+  "challengeStatusCompleted": "Completado",
+  "startChallengeButtonLabel": "Iniciar desafío",
+  "errorLoadingChallengeMessage": "No se pudo cargar el desafío de hoy.",
+  "retryButtonLabel": "Reintentar",
+  "getTodaysChallengeButtonLabel": "Obtener el desafío de hoy",
+
 
   "wordGridScreenTitle": "Sopa de Letras",
   "selectedWordPrefix": "Seleccionado: ",

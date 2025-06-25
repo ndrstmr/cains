@@ -120,6 +120,29 @@ class AppLocalizationsDe extends AppLocalizations {
   String get switchToDarkModeLabel => 'Dunkler Modus';
 
   @override
+  String pointsLabel(int points) {
+    String _temp0 = intl.Intl.pluralLogic(
+      points,
+      locale: localeName,
+      other: '$points Punkte',
+      one: '$points Punkt',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get overallProgressLabel => 'Gesamtfortschritt';
+
+  @override
+  String get challengeStatusOpen => 'Offen';
+
+  @override
+  String get challengeStatusCompleted => 'Abgeschlossen';
+
+  @override
+  String get startChallengeButtonLabel => 'Herausforderung starten';
+
+  @override
   String get noTopicsAvailableMessage => 'Derzeit sind keine Themen verfügbar. Schauen Sie später noch einmal vorbei!';
 
   @override
@@ -160,6 +183,15 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get noWordsFoundYet => 'Noch keine Wörter gefunden.';
+
+  @override
+  String get errorLoadingChallengeMessage => 'Die heutige Herausforderung konnte nicht geladen werden.';
+
+  @override
+  String get retryButtonLabel => 'Wiederholen';
+
+  @override
+  String get getTodaysChallengeButtonLabel => 'Heutige Herausforderung holen';
 
   @override
   String get notAvailableFallback => 'N.V.';

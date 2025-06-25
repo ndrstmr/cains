@@ -66,9 +66,13 @@ final todayDailyChallengeProvider = FutureProvider.autoDispose<ChallengeModel?>(
     final challenge = await functionsService.generateAndGetDailyChallenge();
 
     if (challenge != null && kDebugMode) {
-      print("todayDailyChallengeProvider: Successfully received challenge: ${challenge.id} - ${challenge.title}");
+      if (kDebugMode) {
+        print("todayDailyChallengeProvider: Successfully received challenge: ${challenge.id} - ${challenge.title}");
+      }
     } else if (challenge == null && kDebugMode) {
-      print("todayDailyChallengeProvider: No challenge returned from function for user $userId.");
+      if (kDebugMode) {
+        print("todayDailyChallengeProvider: No challenge returned from function for user $userId.");
+      }
     }
     return challenge;
   } catch (e, stackTrace) {
@@ -89,7 +93,9 @@ final todayDailyChallengeProvider = FutureProvider.autoDispose<ChallengeModel?>(
 final currentDayChallengeProvider = Provider.autoDispose<ChallengeModel?>((ref) {
   final allChallengesAsyncValue = ref.watch(dailyChallengesStreamProvider);
   final today = DateTime.now();
-  final todayDateString = "${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}";
+  // Correctly format the date as YYYY-MM-DD
+  final todayDateString = "${today.year}-${today.month.toString().padLeft(2, '0')}-${today.day.toString().padLeft(2, '0')}";
+
 
   return allChallengesAsyncValue.when(
     data: (challenges) {

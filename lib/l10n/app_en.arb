@@ -80,6 +80,24 @@
   "@switchToLightModeLabel": { "description": "Label for the menu item to switch to light theme" },
   "switchToDarkModeLabel": "Dark Mode",
   "@switchToDarkModeLabel": { "description": "Label for the menu item to switch to dark theme" },
+
+  "pointsLabel": "{points, plural, =0{0 points} one{1 point} other{{points} points}}",
+  "@pointsLabel": {
+    "description": "Label showing the user's points total.",
+    "placeholders": {
+      "points": { "type": "int", "example": "100" }
+    }
+  },
+
+  "overallProgressLabel": "Overall Progress",
+  "@overallProgressLabel": { "description": "Label for the overall progress bar on the Home Screen" },
+
+  "challengeStatusOpen": "Open",
+  "@challengeStatusOpen": { "description": "Status indicator for an open daily challenge" },
+  "challengeStatusCompleted": "Completed",
+  "@challengeStatusCompleted": { "description": "Status indicator for a completed daily challenge" },
+  "startChallengeButtonLabel": "Start Challenge",
+  "@startChallengeButtonLabel": { "description": "Label for the button to start a daily challenge" },
   "noTopicsAvailableMessage": "No topics available yet. Check back later!",
   "@noTopicsAvailableMessage": { "description": "Message displayed on HomeScreen when no topics are found" },
   "errorLoadingTopicsMessage": "Could not load topics. Please try again.",
@@ -121,6 +139,12 @@
   "noWordsFoundYet": "No words found yet.",
   "@noWordsFoundYet": { "description": "Message displayed in WordGridScreen when no words have been found by the user yet." },
 
+  "errorLoadingChallengeMessage": "Could not load today's challenge.",
+  "@errorLoadingChallengeMessage": { "description": "Message displayed when the daily challenge fails to load" },
+  "retryButtonLabel": "Retry",
+  "@retryButtonLabel": { "description": "Label for a button to retry an action, typically after an error" },
+  "getTodaysChallengeButtonLabel": "Get Today's Challenge",
+  "@getTodaysChallengeButtonLabel": { "description": "Label for a button to fetch today's daily challenge" },
   "notAvailableFallback": "N/A",
   "@notAvailableFallback": { "description": "Fallback text when a piece of information is not available." },
   "definitionSectionTitle": "Definition",
