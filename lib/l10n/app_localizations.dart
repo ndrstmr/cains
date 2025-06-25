@@ -63,8 +63,7 @@ import 'app_localizations_es.dart';
 /// be consistent with the languages listed in the AppLocalizations.supportedLocales
 /// property.
 abstract class AppLocalizations {
-  AppLocalizations(String locale)
-    : localeName = intl.Intl.canonicalizedLocale(locale.toString());
+  AppLocalizations(String locale) : localeName = intl.Intl.canonicalizedLocale(locale.toString());
 
   final String localeName;
 
@@ -72,8 +71,7 @@ abstract class AppLocalizations {
     return Localizations.of<AppLocalizations>(context, AppLocalizations);
   }
 
-  static const LocalizationsDelegate<AppLocalizations> delegate =
-      _AppLocalizationsDelegate();
+  static const LocalizationsDelegate<AppLocalizations> delegate = _AppLocalizationsDelegate();
 
   /// A list of this localizations delegate along with the default localizations
   /// delegates.
@@ -85,19 +83,18 @@ abstract class AppLocalizations {
   /// Additional delegates can be added by appending to this list in
   /// MaterialApp. This list does not have to be used at all if a custom list
   /// of delegates is preferred or required.
-  static const List<LocalizationsDelegate<dynamic>> localizationsDelegates =
-      <LocalizationsDelegate<dynamic>>[
-        delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-      ];
+  static const List<LocalizationsDelegate<dynamic>> localizationsDelegates = <LocalizationsDelegate<dynamic>>[
+    delegate,
+    GlobalMaterialLocalizations.delegate,
+    GlobalCupertinoLocalizations.delegate,
+    GlobalWidgetsLocalizations.delegate,
+  ];
 
   /// A list of this localizations delegate's supported locales.
   static const List<Locale> supportedLocales = <Locale>[
     Locale('de'),
     Locale('en'),
-    Locale('es'),
+    Locale('es')
   ];
 
   /// The title of the application
@@ -387,10 +384,69 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Selection must be a straight line.'**
   String get feedbackSelectionNotStraight;
+
+  /// Message displayed in WordGridScreen when no words have been found by the user yet.
+  ///
+  /// In en, this message translates to:
+  /// **'No words found yet.'**
+  String get noWordsFoundYet;
+
+  /// Fallback text when a piece of information is not available.
+  ///
+  /// In en, this message translates to:
+  /// **'N/A'**
+  String get notAvailableFallback;
+
+  /// Title for the definition section in vocabulary detail.
+  ///
+  /// In en, this message translates to:
+  /// **'Definition'**
+  String get definitionSectionTitle;
+
+  /// Title for the synonyms section in vocabulary detail.
+  ///
+  /// In en, this message translates to:
+  /// **'Synonyms'**
+  String get synonymsSectionTitle;
+
+  /// Title for the collocations section in vocabulary detail.
+  ///
+  /// In en, this message translates to:
+  /// **'Collocations'**
+  String get collocationsSectionTitle;
+
+  /// Title for the example sentences section in vocabulary detail.
+  ///
+  /// In en, this message translates to:
+  /// **'Example Sentences'**
+  String get exampleSentencesSectionTitle;
+
+  /// Message shown when no example sentences are available for the selected language.
+  ///
+  /// In en, this message translates to:
+  /// **'No example sentences available for the selected language.'**
+  String get noExamplesAvailable;
+
+  /// Abbreviation for German language.
+  ///
+  /// In en, this message translates to:
+  /// **'DE'**
+  String get languageCodeDe;
+
+  /// Abbreviation for English language.
+  ///
+  /// In en, this message translates to:
+  /// **'EN'**
+  String get languageCodeEn;
+
+  /// Abbreviation for Spanish language.
+  ///
+  /// In en, this message translates to:
+  /// **'ES'**
+  String get languageCodeEs;
 }
 
-class _AppLocalizationsDelegate
-    extends LocalizationsDelegate<AppLocalizations> {
+class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
   const _AppLocalizationsDelegate();
 
   @override
@@ -399,28 +455,26 @@ class _AppLocalizationsDelegate
   }
 
   @override
-  bool isSupported(Locale locale) =>
-      <String>['de', 'en', 'es'].contains(locale.languageCode);
+  bool isSupported(Locale locale) => <String>['de', 'en', 'es'].contains(locale.languageCode);
 
   @override
   bool shouldReload(_AppLocalizationsDelegate old) => false;
 }
 
 AppLocalizations lookupAppLocalizations(Locale locale) {
+
+
   // Lookup logic when only language code is specified.
   switch (locale.languageCode) {
-    case 'de':
-      return AppLocalizationsDe();
-    case 'en':
-      return AppLocalizationsEn();
-    case 'es':
-      return AppLocalizationsEs();
+    case 'de': return AppLocalizationsDe();
+    case 'en': return AppLocalizationsEn();
+    case 'es': return AppLocalizationsEs();
   }
 
   throw FlutterError(
     'AppLocalizations.delegate failed to load unsupported locale "$locale". This is likely '
     'an issue with the localizations generation tool. Please file an issue '
     'on GitHub with a reproducible sample app and the gen-l10n configuration '
-    'that was used.',
+    'that was used.'
   );
 }

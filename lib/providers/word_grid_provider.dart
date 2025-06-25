@@ -278,8 +278,9 @@ class WordGridNotifier extends StateNotifier<WordGridState> {
   // Helper to check if a list of indices forms a straight line (horizontal, vertical, or diagonal)
   // This is a simplified check. A truly robust one is more complex.
   bool _isStraightLinePath(List<GridIndex> indices) {
-    if (indices.length <= 1)
+    if (indices.length <= 1) {
       return true; // Single cell or no selection is trivially a straight line
+    }
 
     // Calculate deltas between consecutive points
     int? dx;
@@ -293,8 +294,9 @@ class WordGridNotifier extends StateNotifier<WordGridState> {
       final currentDy = p2.y - p1.y;
 
       // Check for valid steps (adjacent cells only)
-      if (currentDx.abs() > 1 || currentDy.abs() > 1)
+      if (currentDx.abs() > 1 || currentDy.abs() > 1) {
         return false; // Not adjacent
+      }
 
       if (dx == null) {
         // First segment

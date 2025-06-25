@@ -136,7 +136,7 @@ class WordGridScreen extends ConsumerWidget {
               LinearProgressIndicator(
                 value: currentTopicProgressPercent,
                 minHeight: 10,
-                backgroundColor: Theme.of(context).colorScheme.surfaceVariant,
+                backgroundColor: Theme.of(context).colorScheme.surfaceContainerHighest,
                 valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).colorScheme.secondary),
               ),
               const SizedBox(height: 4),
@@ -168,7 +168,7 @@ class WordGridScreen extends ConsumerWidget {
                 : (wordGridState.gridLetters.isEmpty && wordGridState.hiddenWords.isNotEmpty
                     ? const Text("Grid data is missing but words are expected.") // Should not happen if initialized correctly
                     : Text( // Replace with actual WordGridView widget when available
-                        localizations.wordGridScreenTitle + ' for ${topic.titleEn} \n (Grid: ${wordGridState.gridLetters.length}x${wordGridState.crossAxisCount}, Words: ${wordGridState.hiddenWords.length})',
+                        '${localizations.wordGridScreenTitle} for ${topic.titleEn} \n (Grid: ${wordGridState.gridLetters.length}x${wordGridState.crossAxisCount}, Words: ${wordGridState.hiddenWords.length})',
                         style: Theme.of(context).textTheme.titleLarge,
                         textAlign: TextAlign.center,
                       )

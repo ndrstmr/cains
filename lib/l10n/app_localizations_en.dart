@@ -45,8 +45,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get passwordValidationErrorEmpty => 'Please enter your password';
 
   @override
-  String get passwordValidationErrorLength =>
-      'Password must be at least 6 characters long';
+  String get passwordValidationErrorLength => 'Password must be at least 6 characters long';
 
   @override
   String get dontHaveAccountPrompt => 'Don\'t have an account? Register';
@@ -61,8 +60,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get confirmPasswordFieldHint => 'Confirm your password';
 
   @override
-  String get confirmPasswordValidationErrorEmpty =>
-      'Please confirm your password';
+  String get confirmPasswordValidationErrorEmpty => 'Please confirm your password';
 
   @override
   String get confirmPasswordValidationErrorMatch => 'Passwords do not match';
@@ -77,8 +75,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get pageNotFoundScreenTitle => 'Page Not Found';
 
   @override
-  String get pageNotFoundGenericMessage =>
-      'Oops! Something went wrong or the page doesn\'t exist.';
+  String get pageNotFoundGenericMessage => 'Oops! Something went wrong or the page doesn\'t exist.';
 
   @override
   String get pageNotFoundErrorMessagePrefix => 'Error: ';
@@ -123,12 +120,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get switchToDarkModeLabel => 'Dark Mode';
 
   @override
-  String get noTopicsAvailableMessage =>
-      'No topics available yet. Check back later!';
+  String get noTopicsAvailableMessage => 'No topics available yet. Check back later!';
 
   @override
-  String get errorLoadingTopicsMessage =>
-      'Could not load topics. Please try again.';
+  String get errorLoadingTopicsMessage => 'Could not load topics. Please try again.';
 
   @override
   String get wordGridScreenTitle => 'Word Grid';
@@ -161,6 +156,35 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get feedbackSelectionNotStraight =>
-      'Selection must be a straight line.';
+  String get feedbackSelectionNotStraight => 'Selection must be a straight line.';
+
+  @override
+  String get noWordsFoundYet => 'No words found yet.';
+
+  @override
+  String get notAvailableFallback => 'N/A';
+
+  @override
+  String get definitionSectionTitle => 'Definition';
+
+  @override
+  String get synonymsSectionTitle => 'Synonyms';
+
+  @override
+  String get collocationsSectionTitle => 'Collocations';
+
+  @override
+  String get exampleSentencesSectionTitle => 'Example Sentences';
+
+  @override
+  String get noExamplesAvailable => 'No example sentences available for the selected language.';
+
+  @override
+  String get languageCodeDe => 'DE';
+
+  @override
+  String get languageCodeEn => 'EN';
+
+  @override
+  String get languageCodeEs => 'ES';
 }

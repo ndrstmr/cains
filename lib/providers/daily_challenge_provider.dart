@@ -2,7 +2,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:myapp/models/challenge_model.dart';
 import 'package:myapp/providers/user_progress_provider.dart'; // For currentUserIdProvider, firestoreServiceProvider
-import 'package:myapp/services/firestore_service.dart'; // For FirestoreService type, if needed directly
+// For FirestoreService type, if needed directly
 import 'package:myapp/services/functions_service.dart'; // For FunctionsService and its provider
 import 'package:flutter/foundation.dart'; // For kDebugMode
 

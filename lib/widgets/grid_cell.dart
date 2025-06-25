@@ -36,7 +36,7 @@ class GridCell extends StatelessWidget {
         ); // Or a distinct 'found' color like green
       case SelectionStatus.none:
       default:
-        return colors.surfaceVariant.withOpacity(
+        return colors.surfaceContainerHighest.withOpacity(
           0.5,
         ); // Default cell background
     }
