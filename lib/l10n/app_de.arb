@@ -50,5 +50,26 @@
   "feedbackWordFound": "Wort gefunden: {word}!",
   "feedbackWordAlreadyFound": "Bereits gefunden: {word}",
   "feedbackWordNotValid": "Ungültiges Wort: {word}",
-  "feedbackSelectionNotStraight": "Auswahl muss eine gerade Linie sein."
+  "feedbackSelectionNotStraight": "Auswahl muss eine gerade Linie sein.",
+  "noWordsFoundYet": "Noch keine Wörter gefunden.",
+  "@noWordsFoundYet": { "description": "Nachricht, die im WordGridScreen angezeigt wird, wenn der Benutzer noch keine Wörter gefunden hat." },
+
+  "notAvailableFallback": "N.V.",
+  "@notAvailableFallback": { "description": "Fallback-Text, wenn eine Information nicht verfügbar ist." },
+  "definitionSectionTitle": "Definition",
+  "@definitionSectionTitle": { "description": "Titel für den Definitionsbereich im Vokabeldetail." },
+  "synonymsSectionTitle": "Synonyme",
+  "@synonymsSectionTitle": { "description": "Titel für den Synonymbereich im Vokabeldetail." },
+  "collocationsSectionTitle": "Kollokationen",
+  "@collocationsSectionTitle": { "description": "Titel für den Kollokationsbereich im Vokabeldetail." },
+  "exampleSentencesSectionTitle": "Beispielsätze",
+  "@exampleSentencesSectionTitle": { "description": "Titel für den Beispielsatzbereich im Vokabeldetail." },
+  "noExamplesAvailable": "Keine Beispielsätze für die ausgewählte Sprache verfügbar.",
+  "@noExamplesAvailable": { "description": "Nachricht, die angezeigt wird, wenn keine Beispielsätze für die gewählte Sprache vorhanden sind." },
+  "languageCodeDe": "DE",
+  "@languageCodeDe": { "description": "Abkürzung für die deutsche Sprache." },
+  "languageCodeEn": "EN",
+  "@languageCodeEn": { "description": "Abkürzung für die englische Sprache." },
+  "languageCodeEs": "ES",
+  "@languageCodeEs": { "description": "Abkürzung für die spanische Sprache." }
 }

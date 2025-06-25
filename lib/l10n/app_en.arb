@@ -117,5 +117,26 @@
     }
   },
   "feedbackSelectionNotStraight": "Selection must be a straight line.",
-  "@feedbackSelectionNotStraight": { "description": "Feedback message if the word selection path is not a straight line." }
+  "@feedbackSelectionNotStraight": { "description": "Feedback message if the word selection path is not a straight line." },
+  "noWordsFoundYet": "No words found yet.",
+  "@noWordsFoundYet": { "description": "Message displayed in WordGridScreen when no words have been found by the user yet." },
+
+  "notAvailableFallback": "N/A",
+  "@notAvailableFallback": { "description": "Fallback text when a piece of information is not available." },
+  "definitionSectionTitle": "Definition",
+  "@definitionSectionTitle": { "description": "Title for the definition section in vocabulary detail." },
+  "synonymsSectionTitle": "Synonyms",
+  "@synonymsSectionTitle": { "description": "Title for the synonyms section in vocabulary detail." },
+  "collocationsSectionTitle": "Collocations",
+  "@collocationsSectionTitle": { "description": "Title for the collocations section in vocabulary detail." },
+  "exampleSentencesSectionTitle": "Example Sentences",
+  "@exampleSentencesSectionTitle": { "description": "Title for the example sentences section in vocabulary detail." },
+  "noExamplesAvailable": "No example sentences available for the selected language.",
+  "@noExamplesAvailable": { "description": "Message shown when no example sentences are available for the selected language." },
+  "languageCodeDe": "DE",
+  "@languageCodeDe": { "description": "Abbreviation for German language." },
+  "languageCodeEn": "EN",
+  "@languageCodeEn": { "description": "Abbreviation for English language." },
+  "languageCodeEs": "ES",
+  "@languageCodeEs": { "description": "Abbreviation for Spanish language." }
 }

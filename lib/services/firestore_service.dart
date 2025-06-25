@@ -2,6 +2,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart'; // For kDebugMode
 import 'package:myapp/models/topic_model.dart'; // Import the Topic model
+import 'package:myapp/models/vocabulary_item.dart'; // Import the VocabularyItem model
 
 /// A service to interact with Cloud Firestore.
 class FirestoreService {
@@ -17,6 +18,14 @@ class FirestoreService {
       .withConverter<Topic>(
         fromFirestore: (snapshot, _) => Topic.fromFirestore(snapshot),
         toFirestore: (topic, _) => topic.toFirestore(),
+      );
+
+  // Collection reference for vocabulary items
+  CollectionReference<VocabularyItem> get _vocabularyRef => _firestore
+      .collection('vocabulary')
+      .withConverter<VocabularyItem>(
+        fromFirestore: (snapshot, _) => VocabularyItem.fromFirestore(snapshot),
+        toFirestore: (item, _) => item.toFirestore(),
       );
 
   /// Streams a list of [Topic]s from the 'topics' collection.
@@ -166,6 +175,179 @@ class FirestoreService {
       rethrow;
     }
   }
+
+  /// Adds a predefined list of dummy C1 vocabulary items to the 'vocabulary' collection
+  /// in Firestore if the collection is currently empty.
+  /// Associates vocabulary with existing dummy topic IDs.
+  Future<void> addDummyVocabulary(List<String> topicIds) async {
+    if (kDebugMode) {
+      print('FirestoreService: Checking if dummy vocabulary needs to be added.');
+    }
+
+    if (topicIds.isEmpty) {
+      if (kDebugMode) {
+        print('FirestoreService: No topic IDs provided, cannot add dummy vocabulary.');
+      }
+      return;
+    }
+
+    try {
+      // Check if the vocabulary collection is empty
+      final snapshot = await _vocabularyRef.limit(1).get();
+      if (snapshot.docs.isNotEmpty) {
+        if (kDebugMode) {
+          print('FirestoreService: Vocabulary collection is not empty. No dummy vocabulary added.');
+        }
+        return; // Vocabulary items already exist
+      }
+
+      if (kDebugMode) {
+        print('FirestoreService: Vocabulary collection is empty. Adding dummy vocabulary.');
+      }
+
+      // Dummy C1 Vocabulary Items
+      final List<VocabularyItem> dummyVocabulary = [
+        VocabularyItem(
+          id: '', // Firestore will generate ID
+          word: 'die Herausforderung',
+          definitions: {
+            'de': 'Eine schwierige Aufgabe, die besonderen Einsatz erfordert.',
+            'en': 'A difficult task that requires special effort.',
+            'es': 'Una tarea difícil que requiere un esfuerzo especial.',
+          },
+          synonyms: ['die Schwierigkeit', 'das Problem', 'die Aufgabe'],
+          collocations: ['eine Herausforderung annehmen', 'vor einer Herausforderung stehen'],
+          exampleSentences: {
+            'de': ['Das Projekt stellt eine große Herausforderung dar.', 'Sie meisterte die Herausforderung mit Bravour.'],
+            'en': ['The project presents a major challenge.', 'She mastered the challenge with flying colors.'],
+            'es': ['El proyecto presenta un gran desafío.', 'Superó el desafío con gran éxito.'],
+          },
+          level: 'C1',
+          sourceType: SourceType.predefined,
+          topicId: topicIds[0 % topicIds.length], // Assign to a topic
+        ),
+        VocabularyItem(
+          id: '',
+          word: 'nachhaltig',
+          definitions: {
+            'de': 'So, dass etwas für längere Zeit bestehen bleibt oder wirkt; umweltverträglich.',
+            'en': 'Sustainable; in a way that something lasts or has an effect for a long time; environmentally friendly.',
+            'es': 'Sostenible; de manera que algo dure o tenga efecto por mucho tiempo; respetuoso con el medio ambiente.',
+          },
+          synonyms: ['umweltfreundlich', 'zukunftsfähig', 'dauerhaft'],
+          collocations: ['nachhaltige Entwicklung', 'nachhaltig wirtschaften'],
+          exampleSentences: {
+            'de': ['Wir müssen nachhaltiger leben, um die Umwelt zu schützen.', 'Das Unternehmen setzt auf nachhaltige Produktion.'],
+            'en': ['We need to live more sustainably to protect the environment.', 'The company focuses on sustainable production.'],
+            'es': ['Necesitamos vivir de forma más sostenible para proteger el medio ambiente.', 'La empresa apuesta por una producción sostenible.'],
+          },
+          level: 'C1',
+          sourceType: SourceType.predefined,
+          topicId: topicIds[1 % topicIds.length],
+        ),
+        VocabularyItem(
+          id: '',
+          word: 'die Voraussetzung',
+          definitions: {
+            'de': 'Eine Bedingung, die erfüllt sein muss, damit etwas anderes geschehen kann.',
+            'en': 'A condition that must be met for something else to happen.',
+            'es': 'Una condición que debe cumplirse para que suceda otra cosa.',
+          },
+          synonyms: ['die Bedingung', 'die Anforderung', 'das Erfordernis'],
+          collocations: ['die Voraussetzungen erfüllen', 'unter der Voraussetzung, dass...'],
+          exampleSentences: {
+            'de': ['Gute Sprachkenntnisse sind eine Voraussetzung für diesen Job.', 'Er erfüllte alle Voraussetzungen für die Zulassung.'],
+            'en': ['Good language skills are a prerequisite for this job.', 'He met all the requirements for admission.'],
+            'es': ['Un buen conocimiento de idiomas es un requisito para este trabajo.', 'Cumplió todos los requisitos para la admisión.'],
+          },
+          level: 'C1',
+          sourceType: SourceType.predefined,
+          topicId: topicIds[2 % topicIds.length],
+        ),
+        VocabularyItem(
+          id: '',
+          word: 'umfangreich',
+          definitions: {
+            'de': 'Sehr groß in Bezug auf Menge, Ausmaß oder Inhalt.',
+            'en': 'Very large in terms of quantity, extent, or content.',
+            'es': 'Muy grande en términos de cantidad, extensión o contenido.',
+          },
+          synonyms: ['ausführlich', 'umfassend', 'weitläufig'],
+          collocations: ['umfangreiche Kenntnisse', 'eine umfangreiche Sammlung'],
+          exampleSentences: {
+            'de': ['Die Bibliothek verfügt über eine umfangreiche Sammlung an Fachliteratur.', 'Er hat umfangreiche Erfahrungen in diesem Bereich.'],
+            'en': ['The library has an extensive collection of specialized literature.', 'He has extensive experience in this field.'],
+            'es': ['La biblioteca cuenta con una extensa colección de literatura especializada.', 'Tiene una amplia experiencia en este campo.'],
+          },
+          level: 'C1',
+          sourceType: SourceType.predefined,
+          topicId: topicIds[3 % topicIds.length],
+        ),
+        VocabularyItem(
+          id: '',
+          word: 'die Auswirkung',
+          definitions: {
+            'de': 'Die Folge oder Konsequenz einer Handlung oder eines Ereignisses.',
+            'en': 'The consequence or result of an action or event.',
+            'es': 'La consecuencia o resultado de una acción o evento.',
+          },
+          synonyms: ['die Folge', 'die Konsequenz', 'der Effekt', 'der Einfluss'],
+          collocations: ['positive/negative Auswirkungen haben', 'die Auswirkungen untersuchen'],
+          exampleSentences: {
+            'de': ['Die neuen Maßnahmen hatten positive Auswirkungen auf die Wirtschaft.', 'Die Auswirkungen des Klimawandels sind bereits spürbar.'],
+            'en': ['The new measures had positive effects on the economy.', 'The impacts of climate change are already noticeable.'],
+            'es': ['Las nuevas medidas tuvieron efectos positivos en la economía.', 'Los impactos del cambio climático ya son notables.'],
+          },
+          level: 'C1',
+          sourceType: SourceType.predefined,
+          topicId: topicIds[4 % topicIds.length],
+        ),
+      ];
+
+      final batch = _firestore.batch();
+      for (final item in dummyVocabulary) {
+        final newDocRef = _vocabularyRef.doc(); // Auto-generate ID
+        batch.set(newDocRef, item);
+      }
+      await batch.commit();
+
+      if (kDebugMode) {
+        print('FirestoreService: Successfully added ${dummyVocabulary.length} dummy vocabulary items.');
+      }
+    } on FirebaseException catch (e) {
+      if (kDebugMode) {
+        print('FirestoreService: FirebaseException while adding dummy vocabulary: ${e.code} - ${e.message}');
+      }
+      rethrow;
+    } catch (e) {
+      if (kDebugMode) {
+        print('FirestoreService: Generic exception while adding dummy vocabulary: $e');
+      }
+      rethrow;
+    }
+  }
+
+  /// Streams a list of [VocabularyItem]s for a specific topic from the 'vocabulary' collection.
+  ///
+  /// Filters items by [topicId].
+  Stream<List<VocabularyItem>> getVocabularyStreamForTopic(String topicId) {
+    if (kDebugMode) {
+      print('FirestoreService: Getting vocabulary stream for topic ID: $topicId');
+    }
+    return _vocabularyRef
+        .where('topicId', isEqualTo: topicId)
+        .snapshots()
+        .map((snapshot) {
+          return snapshot.docs.map((doc) => doc.data()).toList();
+        })
+        .handleError((error) {
+          if (kDebugMode) {
+            print('Error fetching vocabulary stream for topic $topicId: $error');
+          }
+          return Stream.error(error);
+        });
+  }
+
 
   // --- Existing placeholder methods from Iteration 1 ---
   // (Keep them or remove if they are not relevant to this service's scope anymore)

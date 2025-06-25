@@ -1,94 +1,97 @@
-// lib/models/vocabulary_item.dart
+// Defines the data structure for a vocabulary item.
+// Includes methods for Firestore serialization and deserialization.
 
-/// Enum representing the source of a vocabulary item.
-enum VocabularySourceType {
-  /// Added by the user manually.
-  custom,
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-  /// Added via AI suggestion.
-  aiAdded,
-
-  /// Added from scanned text.
-  scannedText,
+/// Represents the type of source for a vocabulary item.
+enum SourceType {
+  predefined, // Provided by the app
+  ai_added, // Added by AI
+  scanned_text, // Added from scanned text
 }
 
 /// Represents a single vocabulary item.
 class VocabularyItem {
+  /// The unique identifier for the vocabulary item.
   final String id;
-  final String word;
-  final Map<String, String>
-  definitions; // e.g., {'de': '...', 'en': '...', 'es': '...'}
-  final List<String>? synonyms;
-  final List<String>? collocations;
-  final List<String>? exampleSentences;
-  final VocabularySourceType sourceType;
 
-  /// Creates a new [VocabularyItem] instance.
-  ///
-  /// Requires [id], [word], [definitions], and [sourceType].
-  /// [synonyms], [collocations], and [exampleSentences] are optional.
-  const VocabularyItem({
+  /// The C1 word.
+  final String word;
+
+  /// Definitions of the word in multiple languages.
+  /// Key: language code (e.g., 'de', 'en', 'es')
+  /// Value: definition in that language
+  final Map<String, String> definitions;
+
+  /// A list of synonyms for the word.
+  final List<String> synonyms;
+
+  /// A list of collocations or typical word combinations.
+  final List<String> collocations;
+
+  /// Example sentences for the word in multiple languages.
+  /// Key: language code (e.g., 'de', 'en', 'es')
+  /// Value: list of example sentences in that language
+  final Map<String, List<String>> exampleSentences;
+
+  /// The proficiency level of the word (e.g., 'C1').
+  final String level;
+
+  /// The source type of the vocabulary item.
+  final SourceType sourceType;
+
+  /// The identifier of the topic this vocabulary item belongs to.
+  final String topicId;
+
+  /// Constructs a [VocabularyItem].
+  VocabularyItem({
     required this.id,
     required this.word,
     required this.definitions,
-    this.synonyms,
-    this.collocations,
-    this.exampleSentences,
+    required this.synonyms,
+    required this.collocations,
+    required this.exampleSentences,
+    this.level = 'C1', // Default level to C1
     required this.sourceType,
+    required this.topicId,
   });
 
-  /// Creates a [VocabularyItem] from a JSON object.
-  factory VocabularyItem.fromJson(Map<String, dynamic> json) {
+  /// Creates a [VocabularyItem] from a Firestore document snapshot.
+  factory VocabularyItem.fromFirestore(DocumentSnapshot<Map<String, dynamic>> snapshot) {
+    final data = snapshot.data();
+    if (data == null) {
+      throw StateError('Missing data for VocabularyItem ${snapshot.id}');
+    }
+
     return VocabularyItem(
-      id: json['id'] as String,
-      word: json['word'] as String,
-      definitions: Map<String, String>.from(json['definitions'] as Map),
-      synonyms: (json['synonyms'] as List<dynamic>?)
-          ?.map((e) => e as String)
-          .toList(),
-      collocations: (json['collocations'] as List<dynamic>?)
-          ?.map((e) => e as String)
-          .toList(),
-      exampleSentences: (json['exampleSentences'] as List<dynamic>?)
-          ?.map((e) => e as String)
-          .toList(),
-      sourceType: VocabularySourceType.values.byName(
-        json['sourceType'] as String,
+      id: snapshot.id,
+      word: data['word'] as String,
+      definitions: Map<String, String>.from(data['definitions'] as Map),
+      synonyms: List<String>.from(data['synonyms'] as List),
+      collocations: List<String>.from(data['collocations'] as List),
+      exampleSentences: (data['exampleSentences'] as Map).map(
+        (key, value) => MapEntry(key as String, List<String>.from(value as List)),
       ),
+      level: data['level'] as String? ?? 'C1', // Default to C1 if not present
+      sourceType: SourceType.values.firstWhere(
+        (e) => e.toString() == 'SourceType.${data['sourceType'] as String}',
+        orElse: () => SourceType.predefined, // Default if parsing fails
+      ),
+      topicId: data['topicId'] as String,
     );
   }
 
-  /// Converts this [VocabularyItem] to a JSON object.
-  Map<String, dynamic> toJson() {
+  /// Converts a [VocabularyItem] instance to a Map suitable for Firestore.
+  Map<String, dynamic> toFirestore() {
     return {
-      'id': id,
       'word': word,
       'definitions': definitions,
       'synonyms': synonyms,
       'collocations': collocations,
       'exampleSentences': exampleSentences,
-      'sourceType': sourceType.name,
+      'level': level,
+      'sourceType': sourceType.toString().split('.').last, // Store enum as string
+      'topicId': topicId,
     };
-  }
-
-  /// Creates a copy of this [VocabularyItem] but with the given fields replaced with the new values.
-  VocabularyItem copyWith({
-    String? id,
-    String? word,
-    Map<String, String>? definitions,
-    List<String>? synonyms,
-    List<String>? collocations,
-    List<String>? exampleSentences,
-    VocabularySourceType? sourceType,
-  }) {
-    return VocabularyItem(
-      id: id ?? this.id,
-      word: word ?? this.word,
-      definitions: definitions ?? this.definitions,
-      synonyms: synonyms ?? this.synonyms,
-      collocations: collocations ?? this.collocations,
-      exampleSentences: exampleSentences ?? this.exampleSentences,
-      sourceType: sourceType ?? this.sourceType,
-    );
   }
 }
