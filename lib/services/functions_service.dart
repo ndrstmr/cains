@@ -78,7 +78,7 @@ class FunctionsService {
         } else {
           // Handle cases where the challenge might not be in the expected format
            if (kDebugMode) {
-            print('FunctionsService: Challenge data not found in response: ${responseData}');
+            print('FunctionsService: Challenge data not found in response: $responseData');
           }
           // If the function returns just the challenge directly without a wrapper:
           // return ChallengeModel.fromJson(responseData as Map<String, dynamic>);

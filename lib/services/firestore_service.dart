@@ -57,7 +57,7 @@ class FirestoreService {
     final docRef = _firestore.collection('users').doc(userId);
     return docRef.snapshots().map((snapshot) {
       if (snapshot.exists && snapshot.data() != null) {
-        return UserModel.fromFirestore(snapshot as DocumentSnapshot<Map<String, dynamic>>);
+        return UserModel.fromFirestore(snapshot);
       }
       return null; // User document might not exist yet
     }).handleError((error) {

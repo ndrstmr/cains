@@ -30,12 +30,10 @@ class AppLocalizationsDe extends AppLocalizations {
   String get emailFieldHint => 'Geben Sie Ihre E-Mail-Adresse ein';
 
   @override
-  String get emailValidationErrorEmpty =>
-      'Bitte geben Sie Ihre E-Mail-Adresse ein';
+  String get emailValidationErrorEmpty => 'Bitte geben Sie Ihre E-Mail-Adresse ein';
 
   @override
-  String get emailValidationErrorFormat =>
-      'Bitte geben Sie eine gültige E-Mail-Adresse ein';
+  String get emailValidationErrorFormat => 'Bitte geben Sie eine gültige E-Mail-Adresse ein';
 
   @override
   String get passwordFieldLabel => 'Passwort';
@@ -47,8 +45,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get passwordValidationErrorEmpty => 'Bitte geben Sie Ihr Passwort ein';
 
   @override
-  String get passwordValidationErrorLength =>
-      'Das Passwort muss mindestens 6 Zeichen lang sein';
+  String get passwordValidationErrorLength => 'Das Passwort muss mindestens 6 Zeichen lang sein';
 
   @override
   String get dontHaveAccountPrompt => 'Kein Konto? Registrieren';
@@ -63,12 +60,10 @@ class AppLocalizationsDe extends AppLocalizations {
   String get confirmPasswordFieldHint => 'Bestätigen Sie Ihr Passwort';
 
   @override
-  String get confirmPasswordValidationErrorEmpty =>
-      'Bitte bestätigen Sie Ihr Passwort';
+  String get confirmPasswordValidationErrorEmpty => 'Bitte bestätigen Sie Ihr Passwort';
 
   @override
-  String get confirmPasswordValidationErrorMatch =>
-      'Die Passwörter stimmen nicht überein';
+  String get confirmPasswordValidationErrorMatch => 'Die Passwörter stimmen nicht überein';
 
   @override
   String get alreadyHaveAccountPrompt => 'Bereits ein Konto? Anmelden';
@@ -80,8 +75,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get pageNotFoundScreenTitle => 'Seite nicht gefunden';
 
   @override
-  String get pageNotFoundGenericMessage =>
-      'Hoppla! Etwas ist schiefgelaufen oder die Seite existiert nicht.';
+  String get pageNotFoundGenericMessage => 'Hoppla! Etwas ist schiefgelaufen oder die Seite existiert nicht.';
 
   @override
   String get pageNotFoundErrorMessagePrefix => 'Fehler: ';
@@ -126,12 +120,10 @@ class AppLocalizationsDe extends AppLocalizations {
   String get switchToDarkModeLabel => 'Dunkler Modus';
 
   @override
-  String get noTopicsAvailableMessage =>
-      'Derzeit sind keine Themen verfügbar. Schauen Sie später noch einmal vorbei!';
+  String get noTopicsAvailableMessage => 'Derzeit sind keine Themen verfügbar. Schauen Sie später noch einmal vorbei!';
 
   @override
-  String get errorLoadingTopicsMessage =>
-      'Themen konnten nicht geladen werden. Bitte versuchen Sie es erneut.';
+  String get errorLoadingTopicsMessage => 'Themen konnten nicht geladen werden. Bitte versuchen Sie es erneut.';
 
   @override
   String get wordGridScreenTitle => 'Wortgitter';
@@ -164,6 +156,35 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
-  String get feedbackSelectionNotStraight =>
-      'Auswahl muss eine gerade Linie sein.';
+  String get feedbackSelectionNotStraight => 'Auswahl muss eine gerade Linie sein.';
+
+  @override
+  String get noWordsFoundYet => 'Noch keine Wörter gefunden.';
+
+  @override
+  String get notAvailableFallback => 'N.V.';
+
+  @override
+  String get definitionSectionTitle => 'Definition';
+
+  @override
+  String get synonymsSectionTitle => 'Synonyme';
+
+  @override
+  String get collocationsSectionTitle => 'Kollokationen';
+
+  @override
+  String get exampleSentencesSectionTitle => 'Beispielsätze';
+
+  @override
+  String get noExamplesAvailable => 'Keine Beispielsätze für die ausgewählte Sprache verfügbar.';
+
+  @override
+  String get languageCodeDe => 'DE';
+
+  @override
+  String get languageCodeEn => 'EN';
+
+  @override
+  String get languageCodeEs => 'ES';
 }

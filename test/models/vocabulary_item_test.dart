@@ -170,12 +170,12 @@ class FakeDocumentSnapshot implements DocumentSnapshot<Map<String, dynamic>> {
     if (_data == null) {
       throw StateError('Document does not exist or has no data.');
     }
-    if (field is String && _data!.containsKey(field)) {
-      return _data![field];
+    if (field is String && _data.containsKey(field)) {
+      return _data[field];
     }
-    if (field is FieldPath && _data!.containsKey(field.toString())) {
+    if (field is FieldPath && _data.containsKey(field.toString())) {
        // Basic support for FieldPath, might need more complex logic for nested paths
-      return _data![field.toString()];
+      return _data[field.toString()];
     }
     throw StateError('Field "$field" does not exist in the document.');
   }

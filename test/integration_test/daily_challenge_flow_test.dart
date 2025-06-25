@@ -44,8 +44,7 @@ void main() {
         // For this test to reliably work against emulators, the app's Firebase instances
         // (Auth, Firestore, Functions via FunctionsService) MUST be pointing to the emulators.
         debugPrint(
-          "Integration Test: FIREBASE_EMULATOR flag not explicitly true. " +
-          "Ensure app is configured to use emulators for this test."
+          "Integration Test: FIREBASE_EMULATOR flag not explicitly true. " "Ensure app is configured to use emulators for this test."
         );
         // Attempt to configure them here if not done by the app's main()
         // This is a bit risky as the app might have already initialized them.
