@@ -1,0 +1,41 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Users can read and update their own profile.
+    // Creating user documents is typically handled by server-side logic (e.g., on first sign-up via a function)
+    // or specific client-side logic if allowed. For now, assuming creation is handled elsewhere or covered by update.
+    match /users/{userId} {
+      allow read, update: if request.auth.uid == userId;
+      // allow create: if request.auth.uid == userId; // Add if clients are expected to create their own user doc initially.
+
+      // Daily challenges subcollection:
+      // - Users can read their own challenges.
+      // - Cloud Function (using Admin SDK) generates/creates challenges, bypassing these rules for writes.
+      // - If clients were to create/update challenges directly, this rule would apply.
+      match /daily_challenges/{challengeId} {
+        allow read: if request.auth.uid == userId;
+        // Allow create/update if done by the user themselves OR by a trusted server process (which bypasses rules).
+        // The rule below allows users to create/update their own challenges.
+        // If only the cloud function should write, then these could be more restrictive or removed,
+        // relying on the function's own logic and Admin SDK bypass.
+        allow create, update: if request.auth.uid == userId;
+      }
+    }
+
+    // Topics are publicly readable.
+    // Writes should be restricted (e.g., only via console or admin tools/functions).
+    match /topics/{topicId} {
+      allow read: if true;
+      allow write: if false; // Example: No client-side writes allowed.
+    }
+
+    // Vocabulary items are publicly readable.
+    // Writes should be restricted.
+    match /vocabulary/{vocabId} {
+      allow read: if true;
+      allow write: if false; // Example: No client-side writes allowed.
+    }
+  }
+}
