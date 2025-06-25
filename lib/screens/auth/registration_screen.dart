@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:myapp/providers/auth_provider.dart';
 import 'package:myapp/navigation/app_router.dart'; // For AppRoute enum
-// TODO: Import AppLocalizations
+import 'package:myapp/l10n/app_localizations.dart';
 
 class RegistrationScreen extends ConsumerStatefulWidget {
   const RegistrationScreen({super.key});
@@ -20,7 +20,6 @@ class _RegistrationScreenState extends ConsumerState<RegistrationScreen> {
   final _confirmPasswordController = TextEditingController();
   bool _passwordVisible = false;
   bool _confirmPasswordVisible = false;
-  // bool _isLoading = false; // Will be handled by a StateNotifier
 
   @override
   void dispose() {
@@ -34,38 +33,34 @@ class _RegistrationScreenState extends ConsumerState<RegistrationScreen> {
     if (_formKey.currentState!.validate()) {
       final email = _emailController.text.trim();
       final password = _passwordController.text;
-      // Call registration method from authNotifierProvider
-      await ref.read(authNotifierProvider.notifier).createUserWithEmailAndPassword(email, password);
-      // No navigation here, GoRouter's redirect will handle it on auth state change.
-      // Error display is handled by the ref.listen below.
+      await ref
+          .read(authNotifierProvider.notifier)
+          .createUserWithEmailAndPassword(email, password);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    // final localizations = AppLocalizations.of(context)!; // TODO: Uncomment and use
+    final localizations = AppLocalizations.of(context)!;
 
-    // Listen to the AuthNotifier for error states or other side effects
     ref.listen<AuthState>(authNotifierProvider, (previous, next) {
       if (next.error != null && next.error!.isNotEmpty) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(next.error!),
+            content: Text(
+              next.error!,
+            ), // Error messages from Firebase are not localized by default
             backgroundColor: Theme.of(context).colorScheme.error,
           ),
         );
-        // Clear the error in the notifier once shown
         ref.read(authNotifierProvider.notifier).clearError();
       }
     });
 
-    final authState = ref.watch(authNotifierProvider); // Watch for loading state
+    final authState = ref.watch(authNotifierProvider);
 
     return Scaffold(
-      appBar: AppBar(
-        // title: Text(localizations.registerButton), // TODO: Use i18n
-        title: const Text('Register'), // Placeholder
-      ),
+      appBar: AppBar(title: Text(localizations.registrationScreenTitle)),
       body: Center(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(16.0),
@@ -77,22 +72,18 @@ class _RegistrationScreenState extends ConsumerState<RegistrationScreen> {
                 TextFormField(
                   controller: _emailController,
                   decoration: InputDecoration(
-                    // labelText: localizations.emailFieldLabel, // TODO: Use i18n
-                    labelText: 'Email', // Placeholder
-                    // hintText: localizations.emailFieldHint, // TODO: Use i18n
-                    hintText: 'Enter your email', // Placeholder
+                    labelText: localizations.emailFieldLabel,
+                    hintText: localizations.emailFieldHint,
                     prefixIcon: const Icon(Icons.email),
                     border: const OutlineInputBorder(),
                   ),
                   keyboardType: TextInputType.emailAddress,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      // return localizations.emailValidationErrorEmpty; // TODO: Use i18n
-                      return 'Please enter your email'; // Placeholder
+                      return localizations.emailValidationErrorEmpty;
                     }
                     if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
-                      // return localizations.emailValidationErrorFormat; // TODO: Use i18n
-                      return 'Please enter a valid email address'; // Placeholder
+                      return localizations.emailValidationErrorFormat;
                     }
                     return null;
                   },
@@ -101,14 +92,14 @@ class _RegistrationScreenState extends ConsumerState<RegistrationScreen> {
                 TextFormField(
                   controller: _passwordController,
                   decoration: InputDecoration(
-                    // labelText: localizations.passwordFieldLabel, // TODO: Use i18n
-                    labelText: 'Password', // Placeholder
-                    // hintText: localizations.passwordFieldHint, // TODO: Use i18n
-                    hintText: 'Enter your password', // Placeholder
+                    labelText: localizations.passwordFieldLabel,
+                    hintText: localizations.passwordFieldHint,
                     prefixIcon: const Icon(Icons.lock),
                     suffixIcon: IconButton(
                       icon: Icon(
-                        _passwordVisible ? Icons.visibility : Icons.visibility_off,
+                        _passwordVisible
+                            ? Icons.visibility
+                            : Icons.visibility_off,
                       ),
                       onPressed: () {
                         setState(() {
@@ -121,12 +112,10 @@ class _RegistrationScreenState extends ConsumerState<RegistrationScreen> {
                   obscureText: !_passwordVisible,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      // return localizations.passwordValidationErrorEmpty; // TODO: Use i18n
-                      return 'Please enter your password'; // Placeholder
+                      return localizations.passwordValidationErrorEmpty;
                     }
                     if (value.length < 6) {
-                      // return localizations.passwordValidationErrorLength; // TODO: Use i18n
-                      return 'Password must be at least 6 characters'; // TODO: i18n
+                      return localizations.passwordValidationErrorLength;
                     }
                     return null;
                   },
@@ -135,14 +124,14 @@ class _RegistrationScreenState extends ConsumerState<RegistrationScreen> {
                 TextFormField(
                   controller: _confirmPasswordController,
                   decoration: InputDecoration(
-                    // labelText: localizations.confirmPasswordFieldLabel, // TODO: Use i18n
-                    labelText: 'Confirm Password', // Placeholder
-                    // hintText: localizations.confirmPasswordFieldHint, // TODO: Use i18n
-                    hintText: 'Confirm your password', // Placeholder
+                    labelText: localizations.confirmPasswordFieldLabel,
+                    hintText: localizations.confirmPasswordFieldHint,
                     prefixIcon: const Icon(Icons.lock_outline),
-                     suffixIcon: IconButton(
+                    suffixIcon: IconButton(
                       icon: Icon(
-                        _confirmPasswordVisible ? Icons.visibility : Icons.visibility_off,
+                        _confirmPasswordVisible
+                            ? Icons.visibility
+                            : Icons.visibility_off,
                       ),
                       onPressed: () {
                         setState(() {
@@ -155,20 +144,15 @@ class _RegistrationScreenState extends ConsumerState<RegistrationScreen> {
                   obscureText: !_confirmPasswordVisible,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      // return localizations.confirmPasswordValidationErrorEmpty; // TODO: Use i18n
-                      return 'Please confirm your password'; // Placeholder
+                      return localizations.confirmPasswordValidationErrorEmpty;
                     }
                     if (value != _passwordController.text) {
-                      // return localizations.confirmPasswordValidationErrorMatch; // TODO: Use i18n
-                      return 'Passwords do not match'; // Placeholder
+                      return localizations.confirmPasswordValidationErrorMatch;
                     }
                     return null;
                   },
                 ),
                 const SizedBox(height: 24.0),
-
-                // Register Button (conditionally show loading indicator)
-                // TODO: Replace with a widget that handles loading state
                 authState.isLoading
                     ? const CircularProgressIndicator()
                     : ElevatedButton(
@@ -176,23 +160,20 @@ class _RegistrationScreenState extends ConsumerState<RegistrationScreen> {
                           minimumSize: const Size(double.infinity, 48),
                         ),
                         onPressed: _register,
-                        // child: Text(localizations.registerButton), // TODO: Use i18n
-                        child: const Text('Register'), // Placeholder
+                        child: Text(localizations.registerButton),
                       ),
                 const SizedBox(height: 16.0),
-
-                // Switch to Login Screen
                 TextButton(
-                  onPressed: authState.isLoading ? null : () { // Disable button when loading
-                    // Navigate to LoginScreen
-                    if (GoRouter.of(context).canPop()) {
-                        GoRouter.of(context).pop();
-                    } else {
-                        GoRouter.of(context).go(AppRoute.login.path);
-                    }
-                  },
-                  // child: Text(localizations.alreadyHaveAccountPrompt), // TODO: Use i18n
-                  child: const Text('Already have an account? Login'), // Placeholder
+                  onPressed: authState.isLoading
+                      ? null
+                      : () {
+                          if (GoRouter.of(context).canPop()) {
+                            GoRouter.of(context).pop();
+                          } else {
+                            GoRouter.of(context).go(AppRoute.login.path);
+                          }
+                        },
+                  child: Text(localizations.alreadyHaveAccountPrompt),
                 ),
               ],
             ),

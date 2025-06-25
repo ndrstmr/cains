@@ -19,4 +19,117 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get homePageTitle => 'Startseite';
+
+  @override
+  String get loginScreenTitle => 'Anmelden';
+
+  @override
+  String get emailFieldLabel => 'E-Mail';
+
+  @override
+  String get emailFieldHint => 'Geben Sie Ihre E-Mail-Adresse ein';
+
+  @override
+  String get emailValidationErrorEmpty =>
+      'Bitte geben Sie Ihre E-Mail-Adresse ein';
+
+  @override
+  String get emailValidationErrorFormat =>
+      'Bitte geben Sie eine gültige E-Mail-Adresse ein';
+
+  @override
+  String get passwordFieldLabel => 'Passwort';
+
+  @override
+  String get passwordFieldHint => 'Geben Sie Ihr Passwort ein';
+
+  @override
+  String get passwordValidationErrorEmpty => 'Bitte geben Sie Ihr Passwort ein';
+
+  @override
+  String get passwordValidationErrorLength =>
+      'Das Passwort muss mindestens 6 Zeichen lang sein';
+
+  @override
+  String get dontHaveAccountPrompt => 'Kein Konto? Registrieren';
+
+  @override
+  String get registrationScreenTitle => 'Registrieren';
+
+  @override
+  String get confirmPasswordFieldLabel => 'Passwort bestätigen';
+
+  @override
+  String get confirmPasswordFieldHint => 'Bestätigen Sie Ihr Passwort';
+
+  @override
+  String get confirmPasswordValidationErrorEmpty =>
+      'Bitte bestätigen Sie Ihr Passwort';
+
+  @override
+  String get confirmPasswordValidationErrorMatch =>
+      'Die Passwörter stimmen nicht überein';
+
+  @override
+  String get alreadyHaveAccountPrompt => 'Bereits ein Konto? Anmelden';
+
+  @override
+  String get loadingText => 'Wird geladen...';
+
+  @override
+  String get pageNotFoundScreenTitle => 'Seite nicht gefunden';
+
+  @override
+  String get pageNotFoundGenericMessage =>
+      'Hoppla! Etwas ist schiefgelaufen oder die Seite existiert nicht.';
+
+  @override
+  String get pageNotFoundErrorMessagePrefix => 'Fehler: ';
+
+  @override
+  String get welcomeMessage => 'Willkommen bei der CAINS App!';
+
+  @override
+  String get wordGridGameButton => 'Wortgitter Spiel';
+
+  @override
+  String get aiWordResearchButton => 'KI Wortrecherche';
+
+  @override
+  String get scanTextButton => 'Text Scannen';
+
+  @override
+  String get signOutButtonTooltip => 'Abmelden';
+
+  @override
+  String get languageMenuTooltip => 'Sprachoptionen';
+
+  @override
+  String get settingsMenuTooltip => 'Einstellungen';
+
+  @override
+  String get logoutDialogTitle => 'Abmeldung bestätigen';
+
+  @override
+  String get logoutDialogContent => 'Möchten Sie sich wirklich abmelden?';
+
+  @override
+  String get cancelButtonLabel => 'Abbrechen';
+
+  @override
+  String get logoutButtonLabel => 'Abmelden';
+
+  @override
+  String get switchToLightModeLabel => 'Heller Modus';
+
+  @override
+  String get switchToDarkModeLabel => 'Dunkler Modus';
+
+  @override
+  String get noTopicsAvailableMessage =>
+      'Derzeit sind keine Themen verfügbar. Schauen Sie später noch einmal vorbei!';
+
+  @override
+  String get errorLoadingTopicsMessage =>
+      'Themen konnten nicht geladen werden. Bitte versuchen Sie es erneut.';
 }

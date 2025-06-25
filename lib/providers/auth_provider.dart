@@ -1,6 +1,7 @@
 // lib/providers/auth_provider.dart
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter/foundation.dart'; // Added for @immutable
 import 'package:myapp/services/auth_service.dart'; // Adjust import path if needed
 
 // 1. Provider for AuthService
@@ -39,9 +40,10 @@ class AuthState {
 // The StateNotifier that will manage authentication actions
 class AuthNotifier extends StateNotifier<AuthState> {
   final AuthService _authService;
-  final Reader _read; // Or Ref if using NotifierProvider
+  // final Ref _ref; // Removed as it's unused
 
-  AuthNotifier(this._authService, this._read) : super(const AuthState());
+  AuthNotifier(this._authService)
+    : super(const AuthState()); // Removed _ref from constructor
 
   Future<void> signInWithEmailAndPassword(String email, String password) async {
     state = state.copyWith(isLoading: true, error: null);
@@ -51,22 +53,37 @@ class AuthNotifier extends StateNotifier<AuthState> {
       // No need to update User object here.
       state = state.copyWith(isLoading: false);
     } on FirebaseAuthException catch (e) {
-      state = state.copyWith(isLoading: false, error: e.message ?? 'Login failed');
+      state = state.copyWith(
+        isLoading: false,
+        error: e.message ?? 'Login failed',
+      );
     } catch (e) {
-      state = state.copyWith(isLoading: false, error: 'An unexpected error occurred.');
+      state = state.copyWith(
+        isLoading: false,
+        error: 'An unexpected error occurred.',
+      );
     }
   }
 
-  Future<void> createUserWithEmailAndPassword(String email, String password) async {
+  Future<void> createUserWithEmailAndPassword(
+    String email,
+    String password,
+  ) async {
     state = state.copyWith(isLoading: true, error: null);
     try {
       await _authService.createUserWithEmailAndPassword(email, password);
       // User state will be updated by authStateChangesProvider automatically.
       state = state.copyWith(isLoading: false);
     } on FirebaseAuthException catch (e) {
-      state = state.copyWith(isLoading: false, error: e.message ?? 'Registration failed');
+      state = state.copyWith(
+        isLoading: false,
+        error: e.message ?? 'Registration failed',
+      );
     } catch (e) {
-      state = state.copyWith(isLoading: false, error: 'An unexpected error occurred.');
+      state = state.copyWith(
+        isLoading: false,
+        error: 'An unexpected error occurred.',
+      );
     }
   }
 
@@ -77,9 +94,15 @@ class AuthNotifier extends StateNotifier<AuthState> {
       // User state will be updated by authStateChangesProvider automatically.
       state = state.copyWith(isLoading: false);
     } on FirebaseAuthException catch (e) {
-      state = state.copyWith(isLoading: false, error: e.message ?? 'Sign out failed');
+      state = state.copyWith(
+        isLoading: false,
+        error: e.message ?? 'Sign out failed',
+      );
     } catch (e) {
-      state = state.copyWith(isLoading: false, error: 'An unexpected error occurred.');
+      state = state.copyWith(
+        isLoading: false,
+        error: 'An unexpected error occurred.',
+      );
     }
   }
 
@@ -90,7 +113,9 @@ class AuthNotifier extends StateNotifier<AuthState> {
 }
 
 // The StateNotifierProvider for AuthNotifier
-final authNotifierProvider = StateNotifierProvider<AuthNotifier, AuthState>((ref) {
+final authNotifierProvider = StateNotifierProvider<AuthNotifier, AuthState>((
+  ref,
+) {
   final authService = ref.watch(authServiceProvider);
-  return AuthNotifier(authService, ref.read); // Pass ref.read or ref for Notifier
+  return AuthNotifier(authService); // Pass only authService
 });

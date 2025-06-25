@@ -11,6 +11,7 @@ import 'package:myapp/screens/home_screen.dart';
 import 'package:myapp/screens/wordgrid_screen.dart';
 import 'package:myapp/screens/research_screen.dart';
 import 'package:myapp/screens/scan_screen.dart';
+import 'package:myapp/l10n/app_localizations.dart'; // Import AppLocalizations
 
 // Application specific error screen
 class ErrorScreen extends StatelessWidget {
@@ -19,16 +20,20 @@ class ErrorScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: Add localization for title and message
+    final localizations = AppLocalizations.of(context)!;
     return Scaffold(
-      appBar: AppBar(title: const Text('Page Not Found')),
+      appBar: AppBar(title: Text(localizations.pageNotFoundScreenTitle)),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text('Oops! Something went wrong or the page doesn\'t exist.'),
+            Text(localizations.pageNotFoundGenericMessage),
             const SizedBox(height: 10),
-            Text(error != null ? 'Error: ${error.toString()}' : 'No specific error message.'),
+            Text(
+              error != null
+                  ? '${localizations.pageNotFoundErrorMessagePrefix}${error.toString()}'
+                  : localizations.pageNotFoundGenericMessage,
+            ),
           ],
         ),
       ),
@@ -54,19 +59,23 @@ enum AppRoute {
 final goRouterProvider = Provider<GoRouter>((ref) {
   // ValueNotifier to hold the latest auth state for the redirect logic.
   // It's updated by ref.listen.
-  final authStateListenable = ValueNotifier<AsyncValue<User?>>(const AsyncValue.loading());
+  final authStateListenable = ValueNotifier<AsyncValue<User?>>(
+    const AsyncValue.loading(),
+  );
 
   ref.listen<AsyncValue<User?>>(
     authStateChangesProvider, // The stream provider for auth state
     (previous, next) {
-      authStateListenable.value = next; // Update the notifier on new auth states
+      authStateListenable.value =
+          next; // Update the notifier on new auth states
     },
   );
 
   return GoRouter(
     initialLocation: AppRoute.splash.path,
     debugLogDiagnostics: true, // Log routing diagnostics
-    refreshListenable: authStateListenable, // Re-evaluate routes when authStateListenable changes
+    refreshListenable:
+        authStateListenable, // Re-evaluate routes when authStateListenable changes
     routes: <RouteBase>[
       GoRoute(
         path: AppRoute.splash.path,
@@ -111,11 +120,15 @@ final goRouterProvider = Provider<GoRouter>((ref) {
 
       final loggedIn = authStateAsync.maybeWhen(
         data: (user) => user != null,
-        orElse: () => false, // Treat loading/error as not logged in for redirect decision
+        orElse: () =>
+            false, // Treat loading/error as not logged in for redirect decision
       );
 
-      final currentPath = state.uri.path; // Use state.uri.path for accurate path
-      final onAuthFlow = currentPath == AppRoute.login.path || currentPath == AppRoute.register.path;
+      final currentPath =
+          state.uri.path; // Use state.uri.path for accurate path
+      final onAuthFlow =
+          currentPath == AppRoute.login.path ||
+          currentPath == AppRoute.register.path;
       final onSplash = currentPath == AppRoute.splash.path;
 
       if (onSplash) {

@@ -123,6 +123,216 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Home'**
   String get homePageTitle;
+
+  /// Title for the Login Screen AppBar
+  ///
+  /// In en, this message translates to:
+  /// **'Login'**
+  String get loginScreenTitle;
+
+  /// Label for email input field
+  ///
+  /// In en, this message translates to:
+  /// **'Email'**
+  String get emailFieldLabel;
+
+  /// Hint for email input field
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your email'**
+  String get emailFieldHint;
+
+  /// Validation error for empty email
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your email'**
+  String get emailValidationErrorEmpty;
+
+  /// Validation error for invalid email format
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a valid email address'**
+  String get emailValidationErrorFormat;
+
+  /// Label for password input field
+  ///
+  /// In en, this message translates to:
+  /// **'Password'**
+  String get passwordFieldLabel;
+
+  /// Hint for password input field
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your password'**
+  String get passwordFieldHint;
+
+  /// Validation error for empty password
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your password'**
+  String get passwordValidationErrorEmpty;
+
+  /// Validation error for short password
+  ///
+  /// In en, this message translates to:
+  /// **'Password must be at least 6 characters long'**
+  String get passwordValidationErrorLength;
+
+  /// Prompt to navigate to registration screen
+  ///
+  /// In en, this message translates to:
+  /// **'Don\'t have an account? Register'**
+  String get dontHaveAccountPrompt;
+
+  /// Title for the Registration Screen AppBar
+  ///
+  /// In en, this message translates to:
+  /// **'Register'**
+  String get registrationScreenTitle;
+
+  /// Label for confirm password input field
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm Password'**
+  String get confirmPasswordFieldLabel;
+
+  /// Hint for confirm password input field
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm your password'**
+  String get confirmPasswordFieldHint;
+
+  /// Validation error for empty confirm password
+  ///
+  /// In en, this message translates to:
+  /// **'Please confirm your password'**
+  String get confirmPasswordValidationErrorEmpty;
+
+  /// Validation error when passwords do not match
+  ///
+  /// In en, this message translates to:
+  /// **'Passwords do not match'**
+  String get confirmPasswordValidationErrorMatch;
+
+  /// Prompt to navigate to login screen
+  ///
+  /// In en, this message translates to:
+  /// **'Already have an account? Login'**
+  String get alreadyHaveAccountPrompt;
+
+  /// Text displayed during loading states, e.g. on Splash Screen
+  ///
+  /// In en, this message translates to:
+  /// **'Loading...'**
+  String get loadingText;
+
+  /// Title for the Page Not Found error screen
+  ///
+  /// In en, this message translates to:
+  /// **'Page Not Found'**
+  String get pageNotFoundScreenTitle;
+
+  /// Generic message for page not found error
+  ///
+  /// In en, this message translates to:
+  /// **'Oops! Something went wrong or the page doesn\'t exist.'**
+  String get pageNotFoundGenericMessage;
+
+  /// Prefix for displaying a specific error message on page not found screen
+  ///
+  /// In en, this message translates to:
+  /// **'Error: '**
+  String get pageNotFoundErrorMessagePrefix;
+
+  /// Welcome message on the Home Screen
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome to CAINS App!'**
+  String get welcomeMessage;
+
+  /// Button text for WordGrid Game on Home Screen
+  ///
+  /// In en, this message translates to:
+  /// **'WordGrid Game'**
+  String get wordGridGameButton;
+
+  /// Button text for AI Word Research on Home Screen
+  ///
+  /// In en, this message translates to:
+  /// **'AI Word Research'**
+  String get aiWordResearchButton;
+
+  /// Button text for Scan Text on Home Screen
+  ///
+  /// In en, this message translates to:
+  /// **'Scan Text'**
+  String get scanTextButton;
+
+  /// Tooltip for the Sign Out button
+  ///
+  /// In en, this message translates to:
+  /// **'Sign Out'**
+  String get signOutButtonTooltip;
+
+  /// Tooltip for the language menu icon button in AppBar
+  ///
+  /// In en, this message translates to:
+  /// **'Language options'**
+  String get languageMenuTooltip;
+
+  /// Tooltip for the settings icon button in AppBar
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get settingsMenuTooltip;
+
+  /// Title for the logout confirmation dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm Logout'**
+  String get logoutDialogTitle;
+
+  /// Content/message of the logout confirmation dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to sign out?'**
+  String get logoutDialogContent;
+
+  /// Label for the cancel button, typically in dialogs
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get cancelButtonLabel;
+
+  /// Label for the logout button, typically in dialogs or menus
+  ///
+  /// In en, this message translates to:
+  /// **'Logout'**
+  String get logoutButtonLabel;
+
+  /// Label for the menu item to switch to light theme
+  ///
+  /// In en, this message translates to:
+  /// **'Light Mode'**
+  String get switchToLightModeLabel;
+
+  /// Label for the menu item to switch to dark theme
+  ///
+  /// In en, this message translates to:
+  /// **'Dark Mode'**
+  String get switchToDarkModeLabel;
+
+  /// Message displayed on HomeScreen when no topics are found
+  ///
+  /// In en, this message translates to:
+  /// **'No topics available yet. Check back later!'**
+  String get noTopicsAvailableMessage;
+
+  /// Message displayed on HomeScreen when topics fail to load
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load topics. Please try again.'**
+  String get errorLoadingTopicsMessage;
 }
 
 class _AppLocalizationsDelegate

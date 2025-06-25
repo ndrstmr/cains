@@ -17,13 +17,11 @@ Future<void> main() async {
   // await Firebase.initializeApp(
   //   options: DefaultFirebaseOptions.currentPlatform, // From firebase_flutter_cli
   // );
-  print("Firebase Initialization Placeholder: Ensure Firebase is properly initialized for Auth to work.");
-
-  runApp(
-    const ProviderScope(
-      child: MyApp(),
-    ),
+  print(
+    "Firebase Initialization Placeholder: Ensure Firebase is properly initialized for Auth to work.",
   );
+
+  runApp(const ProviderScope(child: MyApp()));
 }
 
 class MyApp extends ConsumerWidget {
@@ -35,7 +33,8 @@ class MyApp extends ConsumerWidget {
     final goRouter = ref.watch(goRouterProvider); // Watch the goRouterProvider
 
     return MaterialApp.router(
-      title: 'CAINS App', // Will be overridden by onGenerateTitle if implemented
+      title:
+          'CAINS App', // Will be overridden by onGenerateTitle if implemented
       debugShowCheckedModeBanner: false,
 
       // Theme configuration
@@ -45,7 +44,6 @@ class MyApp extends ConsumerWidget {
 
       // Router configuration
       routerConfig: goRouter, // Use the goRouter instance from the provider
-
       // Localization configuration
       localizationsDelegates: const [
         AppLocalizations.delegate,
