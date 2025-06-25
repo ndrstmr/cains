@@ -50,5 +50,26 @@
   "feedbackWordFound": "¡Palabra encontrada: {word}!",
   "feedbackWordAlreadyFound": "Ya encontrada: {word}",
   "feedbackWordNotValid": "Palabra no válida: {word}",
-  "feedbackSelectionNotStraight": "La selección debe ser una línea recta."
+  "feedbackSelectionNotStraight": "La selección debe ser una línea recta.",
+  "noWordsFoundYet": "Aún no se han encontrado palabras.",
+  "@noWordsFoundYet": { "description": "Mensaje que se muestra en WordGridScreen cuando el usuario aún no ha encontrado ninguna palabra." },
+
+  "notAvailableFallback": "N/D",
+  "@notAvailableFallback": { "description": "Texto alternativo cuando una información no está disponible." },
+  "definitionSectionTitle": "Definición",
+  "@definitionSectionTitle": { "description": "Título para la sección de definición en el detalle del vocabulario." },
+  "synonymsSectionTitle": "Sinónimos",
+  "@synonymsSectionTitle": { "description": "Título para la sección de sinónimos en el detalle del vocabulario." },
+  "collocationsSectionTitle": "Colocaciones",
+  "@collocationsSectionTitle": { "description": "Título para la sección de colocaciones en el detalle del vocabulario." },
+  "exampleSentencesSectionTitle": "Frases de Ejemplo",
+  "@exampleSentencesSectionTitle": { "description": "Título para la sección de frases de ejemplo en el detalle del vocabulario." },
+  "noExamplesAvailable": "No hay frases de ejemplo disponibles para el idioma seleccionado.",
+  "@noExamplesAvailable": { "description": "Mensaje que se muestra cuando no hay frases de ejemplo disponibles para el idioma seleccionado." },
+  "languageCodeDe": "DE",
+  "@languageCodeDe": { "description": "Abreviatura para el idioma alemán." },
+  "languageCodeEn": "EN",
+  "@languageCodeEn": { "description": "Abreviatura para el idioma inglés." },
+  "languageCodeEs": "ES",
+  "@languageCodeEs": { "description": "Abreviatura para el idioma español." }
 }

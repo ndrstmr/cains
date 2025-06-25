@@ -8,6 +8,7 @@ import 'package:myapp/screens/splash_screen.dart';
 import 'package:myapp/screens/auth/login_screen.dart';
 import 'package:myapp/screens/auth/registration_screen.dart';
 import 'package:myapp/screens/home_screen.dart';
+import 'package:myapp/models/topic_model.dart'; // Import Topic model
 import 'package:myapp/screens/wordgrid_screen.dart';
 import 'package:myapp/screens/research_screen.dart';
 import 'package:myapp/screens/scan_screen.dart';
@@ -98,9 +99,19 @@ final goRouterProvider = Provider<GoRouter>((ref) {
         builder: (context, state) => const HomeScreen(),
       ),
       GoRoute(
-        path: AppRoute.wordgrid.path,
+        path: AppRoute.wordgrid.path, // Keep the base path
         name: AppRoute.wordgrid.name,
-        builder: (context, state) => const WordGridScreen(),
+        builder: (context, state) {
+          // Expect a Topic object to be passed as an extra
+          final topic = state.extra as Topic?;
+          if (topic != null) {
+            return WordGridScreen(topic: topic);
+          }
+          // If topic is null, redirect to home or show an error.
+          // For simplicity, redirecting to home. Consider a specific error page.
+          // This scenario should ideally be prevented by how you navigate.
+          return const HomeScreen(); // Or an ErrorScreen
+        },
         // TODO: Add redirect logic here or protect globally if all sub-routes need protection
       ),
       GoRoute(

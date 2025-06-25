@@ -176,10 +176,8 @@ class HomeScreen extends ConsumerWidget {
               return TopicCard(
                 topic: topic,
                 onTap: () {
-                  // Navigate to WordGridScreen
-                  // For now, WordGridScreen uses a hardcoded grid.
-                  // Later, this could pass topic.id or specific grid data.
-                  GoRouter.of(context).go(AppRoute.wordgrid.path);
+                  // Navigate to WordGridScreen, passing the topic object
+                  GoRouter.of(context).go(AppRoute.wordgrid.path, extra: topic);
                 },
               );
             },
