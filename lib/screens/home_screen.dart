@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:myapp/l10n/app_localizations.dart';
-import 'package:myapp/models/topic_model.dart';
 import 'package:myapp/models/user_model.dart';
 import 'package:myapp/models/challenge_model.dart'; // Added ChallengeModel
 import 'package:myapp/providers/auth_provider.dart';
@@ -18,38 +17,39 @@ import 'package:myapp/navigation/app_router.dart';
 // Enum for settings actions
 enum SettingsAction { toggleTheme, logout }
 
+/// Shows a confirmation dialog for logging out.
+Future<bool?> _showLogoutConfirmationDialog(
+  BuildContext context,
+  AppLocalizations localizations,
+) {
+  return showDialog<bool>(
+    context: context,
+    builder: (BuildContext dialogContext) {
+      return AlertDialog(
+        title: Text(localizations.logoutDialogTitle),
+        content: Text(localizations.logoutDialogContent),
+        actions: <Widget>[
+          TextButton(
+            child: Text(localizations.cancelButtonLabel),
+            onPressed: () {
+              Navigator.of(dialogContext).pop(false);
+            },
+          ),
+          TextButton(
+            child: Text(localizations.logoutButtonLabel),
+            onPressed: () {
+              Navigator.of(dialogContext).pop(true);
+            },
+          ),
+        ],
+      );
+    },
+  );
+}
+
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
 
-  Future<bool?> _showLogoutConfirmationDialog(
-    BuildContext context,
-    AppLocalizations localizations,
-  ) {
-    // ... (dialog logic remains the same)
-        return showDialog<bool>(
-      context: context,
-      builder: (BuildContext dialogContext) {
-        return AlertDialog(
-          title: Text(localizations.logoutDialogTitle),
-          content: Text(localizations.logoutDialogContent),
-          actions: <Widget>[
-            TextButton(
-              child: Text(localizations.cancelButtonLabel),
-              onPressed: () {
-                Navigator.of(dialogContext).pop(false);
-              },
-            ),
-            TextButton(
-              child: Text(localizations.logoutButtonLabel),
-              onPressed: () {
-                Navigator.of(dialogContext).pop(true);
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -58,23 +58,16 @@ class HomeScreen extends ConsumerWidget {
     final currentThemeMode = ref.watch(themeModeProvider);
     final userProgressAsyncValue = ref.watch(userProgressProvider);
     final currentChallenge = ref.watch(currentDayChallengeProvider); // Get today's challenge from stream
-    final todayChallengeFuture = ref.watch(todayDailyChallengeProvider); // For explicit fetch/generate status
+    // Use ref.watch for the AsyncValue of the future to react to its state changes
+    final todayChallengeAsyncValue = ref.watch(todayDailyChallengeProvider);
 
-    // Automatically try to fetch/generate challenge if none is loaded and user is logged in
-    // This effect runs once when the HomeScreen is built or when user logs in.
-    // It checks if a challenge is already available via currentChallenge. If not, it triggers a fetch.
+    // Trigger fetch/generate if needed. This is an effect, not part of the build method's direct return.
+    // Use ref.listen or a Riverpod .family provider/selector pattern for more controlled side effects.
     final userId = ref.watch(currentUserIdProvider);
-    if (userId != null && currentChallenge == null && !todayChallengeFuture.isLoading) {
-      // Check if we haven't tried fetching recently or if the last attempt failed and we want to retry.
-      // For simplicity, we'll just invalidate if no current challenge.
-      // A more sophisticated approach might check timestamps or error states.
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (kDebugMode) {
-          print("HomeScreen: No current day challenge found, attempting to fetch/generate.");
-        }
-        ref.invalidate(todayDailyChallengeProvider);
-      });
-    }
+    ref.listen<AsyncValue<ChallengeModel?>>(todayDailyChallengeProvider, (previous, next) {
+      // This listener can be used to react to the completion/error of the fetch/generate future.
+      // You might show a snackbar on error, or do other side effects here.
+    });
 
 
     ref.listen<AuthState>(authNotifierProvider, (previous, next) {
@@ -221,7 +214,7 @@ class HomeScreen extends ConsumerWidget {
             ),
 
           // Daily Challenge Section
-          _DailyChallengeSection(currentChallenge: currentChallenge, todayChallengeFuture: todayChallengeFuture),
+ _DailyChallengeSection(currentChallenge: currentChallenge, todayChallengeAsyncValue: todayChallengeAsyncValue),
 
           // Topics Grid
           Expanded(
@@ -265,26 +258,12 @@ class HomeScreen extends ConsumerWidget {
       ),
     );
   }
-
-  String _getLocalizedTitle(BuildContext context, Topic topic) {
-    // ... (helper remains the same)
-        final locale = Localizations.localeOf(context).languageCode;
-    switch (locale) {
-      case 'de':
-        return topic.titleDe;
-      case 'es':
-        return topic.titleEs;
-      case 'en':
-      default:
-        return topic.titleEn;
-    }
-  }
 }
 
 // Internal widget for displaying the daily challenge
 class _DailyChallengeSection extends ConsumerWidget {
-  final ChallengeModel? currentChallenge;
-  final AsyncValue<ChallengeModel?> todayChallengeFuture;
+  final ChallengeModel? currentChallenge; // From the stream (potentially already available)
+  final AsyncValue<ChallengeModel?> todayChallengeAsyncValue; // From the future (explicit fetch/generate)
 
   const _DailyChallengeSection({
     required this.currentChallenge,
@@ -294,7 +273,28 @@ class _DailyChallengeSection extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final localizations = AppLocalizations.of(context)!;
+    // Access the state from the AsyncValue of the future
+    final bool isLoading = todayChallengeAsyncValue.isLoading;
+    final bool hasError = todayChallengeAsyncValue.hasError;
+    final ChallengeModel? fetchedChallenge = todayChallengeAsyncValue.valueOrNull;
 
+    // Prioritize showing the challenge from the stream if available
+    // Otherwise, show loading/error/button based on the future's state
+    final bool showChallengeCard = currentChallenge != null;
+    final bool showLoading = !showChallengeCard && isLoading;
+    final bool showError = !showChallengeCard && !isLoading && hasError;
+    final bool showFetchButton = !showChallengeCard && !isLoading && !hasError && fetchedChallenge == null;
+
+    // Trigger fetch/generate if no challenge is currently available from either source
+    // and we are not already loading. This ensures we try to get today's challenge
+    // if the app starts and it's not in the stream or hasn't been fetched yet.
+    if (!showChallengeCard && !isLoading && fetchedChallenge == null) {
+       WidgetsBinding.instance.addPostFrameCallback((_) {
+        ref.invalidate(todayDailyChallengeProvider);
+       });
+    }
+
+    // Display the challenge card if currentChallenge is available from the stream
     if (currentChallenge != null) {
       return Card(
         margin: const EdgeInsets.all(16.0),
@@ -332,14 +332,14 @@ class _DailyChallengeSection extends ConsumerWidget {
                     onPressed: currentChallenge!.status == ChallengeStatus.open
                         ? () {
                             // TODO: Implement navigation to the challenge (e.g., specific WordGridScreen)
-                            if (kDebugMode) {
-                              print("Start challenge: ${currentChallenge!.id} - ${currentChallenge!.targetWord}");
-                            }
                             // Example: Navigate to word grid for the target topic
                             // This requires fetching the TopicModel for currentChallenge.targetTopicId
-                            // For now, just print.
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text("Starting challenge: ${currentChallenge!.targetWord}")),
+                            // For now, we'll navigate to the generic wordgrid route, assuming
+                            // the next screen can handle the challenge ID. You might need a dedicated
+                            // daily challenge screen or pass the challenge ID as an extra.
+                            GoRouter.of(context).go(
+                              AppRoute.wordgrid.path, // Or a dedicated challenge route
+                              extra: currentChallenge!.targetTopicId, // Pass topic ID or challenge object
                             );
                           }
                         : null, // Disable if completed or failed
@@ -350,15 +350,13 @@ class _DailyChallengeSection extends ConsumerWidget {
           ),
         ),
       );
-    } else if (todayChallengeFuture.isLoading) {
+    } else if (showLoading) {
       return const Padding(
         padding: EdgeInsets.all(16.0),
         child: Center(child: CircularProgressIndicator()),
       );
-    } else if (todayChallengeFuture.hasError) {
-       if (kDebugMode) {
-          print("Error loading today's challenge: ${todayChallengeFuture.error}");
-        }
+    } else if (showError) {
+       // Display an error message and a retry button
       return Padding(
         padding: const EdgeInsets.all(16.0),
         child: Center(
@@ -376,7 +374,7 @@ class _DailyChallengeSection extends ConsumerWidget {
         ),
       );
     } else {
-      // No challenge loaded, and not currently loading/error - show button to fetch
+      // No challenge from stream, not loading, no error, and future hasn't returned a challenge
       return Padding(
         padding: const EdgeInsets.all(16.0),
         child: Center(

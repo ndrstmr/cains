@@ -319,6 +319,36 @@ abstract class AppLocalizations {
   /// **'Dark Mode'**
   String get switchToDarkModeLabel;
 
+  /// Label showing the user's points total.
+  ///
+  /// In en, this message translates to:
+  /// **'{points, plural, =0{0 points} one{1 point} other{{points} points}}'**
+  String pointsLabel(int points);
+
+  /// Label for the overall progress bar on the Home Screen
+  ///
+  /// In en, this message translates to:
+  /// **'Overall Progress'**
+  String get overallProgressLabel;
+
+  /// Status indicator for an open daily challenge
+  ///
+  /// In en, this message translates to:
+  /// **'Open'**
+  String get challengeStatusOpen;
+
+  /// Status indicator for a completed daily challenge
+  ///
+  /// In en, this message translates to:
+  /// **'Completed'**
+  String get challengeStatusCompleted;
+
+  /// Label for the button to start a daily challenge
+  ///
+  /// In en, this message translates to:
+  /// **'Start Challenge'**
+  String get startChallengeButtonLabel;
+
   /// Message displayed on HomeScreen when no topics are found
   ///
   /// In en, this message translates to:
@@ -390,6 +420,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No words found yet.'**
   String get noWordsFoundYet;
+
+  /// Message displayed when the daily challenge fails to load
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load today\'s challenge.'**
+  String get errorLoadingChallengeMessage;
+
+  /// Label for a button to retry an action, typically after an error
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get retryButtonLabel;
+
+  /// Label for a button to fetch today's daily challenge
+  ///
+  /// In en, this message translates to:
+  /// **'Get Today\'s Challenge'**
+  String get getTodaysChallengeButtonLabel;
 
   /// Fallback text when a piece of information is not available.
   ///

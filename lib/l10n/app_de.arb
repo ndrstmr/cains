@@ -40,6 +40,18 @@
   "switchToLightModeLabel": "Heller Modus",
   "switchToDarkModeLabel": "Dunkler Modus",
   "noTopicsAvailableMessage": "Derzeit sind keine Themen verfügbar. Schauen Sie später noch einmal vorbei!",
+
+  "overallProgressLabel": "Gesamtfortschritt",
+  "@overallProgressLabel": { "description": "Label for the overall progress bar on the home screen." },
+  "challengeStatusOpen": "Offen",
+  "@challengeStatusOpen": { "description": "Label for the status of a daily challenge when it's open." },
+  "challengeStatusCompleted": "Abgeschlossen",
+  "@challengeStatusCompleted": { "description": "Label for the status of a daily challenge when it's completed." },
+  "startChallengeButtonLabel": "Herausforderung starten",
+  "@startChallengeButtonLabel": { "description": "Label for the button to start a daily challenge." },
+  "errorLoadingChallengeMessage": "Die heutige Herausforderung konnte nicht geladen werden.",
+  "@errorLoadingChallengeMessage": { "description": "Message displayed when there's an error loading the daily challenge." },
+  "retryButtonLabel": "Wiederholen",
   "errorLoadingTopicsMessage": "Themen konnten nicht geladen werden. Bitte versuchen Sie es erneut.",
 
   "wordGridScreenTitle": "Wortgitter",
@@ -71,5 +83,16 @@
   "languageCodeEn": "EN",
   "@languageCodeEn": { "description": "Abkürzung für die englische Sprache." },
   "languageCodeEs": "ES",
-  "@languageCodeEs": { "description": "Abkürzung für die spanische Sprache." }
+  "@languageCodeEs": { "description": "Abkürzung für die spanische Sprache." },
+  "getTodaysChallengeButtonLabel": "Heutige Herausforderung holen",
+  "@getTodaysChallengeButtonLabel": {
+    "description": "Label for the button to fetch/generate today's daily challenge if none is loaded."
+  },
+  "pointsLabel": "{points, plural, one{{points} Punkt} other{{points} Punkte}}",
+  "@pointsLabel": {
+    "description": "Label to display the user's total points.",
+    "placeholders": {
+      "points": { "type": "int", "example": "123" }
+    }
+  }
 }

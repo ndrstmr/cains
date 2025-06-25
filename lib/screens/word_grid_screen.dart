@@ -3,10 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cloud_firestore/cloud_firestore.dart'; // For Timestamp
 import 'package:myapp/models/topic_model.dart';
-import 'package:myapp/models/user_model.dart';
 import 'package:myapp/providers/user_progress_provider.dart';
 import 'package:myapp/providers/word_grid_provider.dart'; // For WordGridState and wordGridProvider
-import 'package:myapp/services/firestore_service.dart'; // For firestoreServiceProvider
+// For firestoreServiceProvider
 // Corrected path based on where app_localizations.dart was created
 import 'package:myapp/utils/app_localizations.dart';
 import 'package:flutter/foundation.dart'; // For kDebugMode
