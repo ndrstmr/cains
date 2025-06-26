@@ -228,6 +228,26 @@ class HomeScreen extends ConsumerWidget {
               style: ElevatedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(vertical: 12.0),
                 textStyle: Theme.of(context).textTheme.titleMedium,
+                minimumSize: const Size(double.infinity, 36), // Ensure full width
+              ),
+            ),
+          ),
+
+          // Image Scan Button
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 6.0), // Reduced vertical padding
+            child: ElevatedButton.icon(
+              icon: const Icon(Icons.image_search_outlined),
+              label: Text(localizations.translate('imageScanButtonTitle', defaultValue: 'Scan Text from Image')), // Placeholder key
+              onPressed: () {
+                GoRouter.of(context).go(AppRoute.imageScan.path);
+              },
+              style: ElevatedButton.styleFrom(
+                padding: const EdgeInsets.symmetric(vertical: 12.0),
+                textStyle: Theme.of(context).textTheme.titleMedium,
+                minimumSize: const Size(double.infinity, 36), // Ensure full width
+                backgroundColor: Theme.of(context).colorScheme.surfaceVariant, // Different color for visual distinction
+                foregroundColor: Theme.of(context).colorScheme.onSurfaceVariant,
               ),
             ),
           ),

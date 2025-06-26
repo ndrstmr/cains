@@ -119,5 +119,39 @@
   "errorSavingVocabularyGeneric": "Error al guardar en el vocabulario.",
   "noResultToSaveMessage": "No hay resultado para guardar.",
   "cannotSaveUserNotLoggedInMessage": "No se puede guardar: Usuario no autenticado o servicio no disponible.",
-  "pleaseEnterWordMessage": "Por favor ingrese una palabra."
+  "pleaseEnterWordMessage": "Por favor ingrese una palabra.",
+
+  "imageScanScreenTitle": "Reconocimiento de Texto",
+  "@imageScanScreenTitle": { "description": "Título del AppBar para la pantalla de Escaneo de Imagen" },
+  "pickFromGalleryButton": "Galería",
+  "@pickFromGalleryButton": { "description": "Etiqueta del botón para seleccionar una imagen de la galería" },
+  "takePictureButton": "Cámara",
+  "@takePictureButton": { "description": "Etiqueta del botón para tomar una foto con la cámara" },
+  "processImageButton": "Reconocer Texto",
+  "@processImageButton": { "description": "Etiqueta del botón para iniciar el procesamiento OCR" },
+  "resetButton": "Reiniciar",
+  "@resetButton": { "description": "Etiqueta del botón para reiniciar el estado de escaneo de imagen" },
+  "selectImagePrompt": "Seleccione una imagen o tome una foto para comenzar.",
+  "@selectImagePrompt": { "description": "Texto de marcador de posición cuando no se selecciona ninguna imagen en la pantalla de Escaneo de Imagen" },
+  "wordTappedMessage": "Tocado: {word}",
+  "@wordTappedMessage": {
+    "description": "Prefijo del mensaje de Snackbar cuando se toca una palabra reconocida.",
+    "placeholders": { "word": { "type": "String", "example": "Hola" } }
+  },
+  "mustBeLoggedInToSaveError": "Debes iniciar sesión para guardar palabras.",
+  "@mustBeLoggedInToSaveError": { "description": "Mensaje de error si el usuario intenta guardar una palabra sin iniciar sesión." },
+  "scannedFromImageDefaultDef": "Escaneado de imagen",
+  "@scannedFromImageDefaultDef": { "description": "Definición predeterminada para un elemento de vocabulario creado a partir de una imagen escaneada." },
+  "wordSavedSuccessMessage": "¡\"{word}\" guardado!",
+  "@wordSavedSuccessMessage": {
+    "description": "Mensaje de éxito cuando una palabra escaneada se guarda en el vocabulario.",
+    "placeholders": { "word": { "type": "String", "example": "Tecnología" } }
+  },
+  "wordSaveFailedError": "Error al guardar la palabra: {error}",
+  "@wordSaveFailedError": {
+    "description": "Mensaje de error cuando falla el guardado de una palabra escaneada en el vocabulario.",
+    "placeholders": { "error": { "type": "String", "example": "Error de red" } }
+  },
+  "imageScanButtonTitle": "Escanear Texto de Imagen",
+  "@imageScanButtonTitle": { "description": "Etiqueta del botón en la pantalla de Inicio para navegar a la función de Escaneo de Imagen" }
 }

@@ -126,5 +126,39 @@
   "errorSavingVocabularyGeneric": "Fehler beim Speichern in der Vokabelliste.",
   "noResultToSaveMessage": "Kein Ergebnis zum Speichern vorhanden.",
   "cannotSaveUserNotLoggedInMessage": "Speichern nicht möglich: Benutzer nicht angemeldet oder Dienst nicht verfügbar.",
-  "pleaseEnterWordMessage": "Bitte geben Sie ein Wort ein."
+  "pleaseEnterWordMessage": "Bitte geben Sie ein Wort ein.",
+
+  "imageScanScreenTitle": "Texterkennung",
+  "@imageScanScreenTitle": { "description": "AppBar-Titel für den Texterkennungsbildschirm" },
+  "pickFromGalleryButton": "Galerie",
+  "@pickFromGalleryButton": { "description": "Button-Label zur Auswahl eines Bildes aus der Galerie" },
+  "takePictureButton": "Kamera",
+  "@takePictureButton": { "description": "Button-Label zur Aufnahme eines Bildes mit der Kamera" },
+  "processImageButton": "Text erkennen",
+  "@processImageButton": { "description": "Button-Label zum Starten der OCR-Verarbeitung" },
+  "resetButton": "Zurücksetzen",
+  "@resetButton": { "description": "Button-Label zum Zurücksetzen des Bildscan-Status" },
+  "selectImagePrompt": "Wählen Sie ein Bild aus oder nehmen Sie ein Foto auf, um zu starten.",
+  "@selectImagePrompt": { "description": "Platzhaltertext, wenn kein Bild auf dem Texterkennungsbildschirm ausgewählt ist" },
+  "wordTappedMessage": "Angetippt: {word}",
+  "@wordTappedMessage": {
+    "description": "Snackbar-Nachrichtenpräfix, wenn ein erkanntes Wort angetippt wird.",
+    "placeholders": { "word": { "type": "String", "example": "Hallo" } }
+  },
+  "mustBeLoggedInToSaveError": "Sie müssen angemeldet sein, um Wörter zu speichern.",
+  "@mustBeLoggedInToSaveError": { "description": "Fehlermeldung, wenn der Benutzer versucht, ein Wort zu speichern, ohne angemeldet zu sein." },
+  "scannedFromImageDefaultDef": "Von Bild gescannt",
+  "@scannedFromImageDefaultDef": { "description": "Standarddefinition für einen Vokabeleintrag, der von einem gescannten Bild erstellt wurde." },
+  "wordSavedSuccessMessage": "\"{word}\" gespeichert!",
+  "@wordSavedSuccessMessage": {
+    "description": "Erfolgsmeldung, wenn ein gescanntes Wort im Vokabular gespeichert wurde.",
+    "placeholders": { "word": { "type": "String", "example": "Technologie" } }
+  },
+  "wordSaveFailedError": "Fehler beim Speichern des Wortes: {error}",
+  "@wordSaveFailedError": {
+    "description": "Fehlermeldung, wenn das Speichern eines gescannten Wortes im Vokabular fehlschlägt.",
+    "placeholders": { "error": { "type": "String", "example": "Netzwerkfehler" } }
+  },
+  "imageScanButtonTitle": "Text aus Bild scannen",
+  "@imageScanButtonTitle": { "description": "Button-Label auf dem Startbildschirm zur Navigation zur Bildscan-Funktion" }
 }
