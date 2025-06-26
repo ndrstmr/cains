@@ -369,4 +369,59 @@ class FirestoreService {
 
   // --- Removed old placeholder methods for addVocabularyItem and getVocabularyItems ---
   // as they are now properly implemented with _vocabularyRef or are not needed.
+
+  /// Saves a [VocabularyItem] to the user's custom vocabulary list.
+  ///
+  /// [userId]: The ID of the user.
+  /// [item]: The [VocabularyItem] to save.
+  /// The item's ID will be used as the document ID in Firestore. If the item's ID is empty,
+  /// Firestore will generate a new ID. However, AI-generated items should have an ID.
+  Future<void> saveVocabularyItem(String userId, VocabularyItem item) async {
+    if (userId.isEmpty) {
+      if (kDebugMode) {
+        print('FirestoreService: saveVocabularyItem called with empty userId.');
+      }
+      throw ArgumentError('User ID cannot be empty.');
+    }
+    if (item.word.isEmpty) {
+      if (kDebugMode) {
+        print('FirestoreService: saveVocabularyItem called with empty word in item.');
+      }
+      throw ArgumentError('Vocabulary item must have a word.');
+    }
+
+    // It's crucial that the item has a unique ID.
+    // If item.id is from the AI function, it should be unique enough.
+    // If we want Firestore to generate an ID, we'd use .add() instead of .doc(item.id).set()
+    // or .doc().set() and then get the ID.
+    // For custom_vocabulary, using item.id (which might be based on word + timestamp from AI func)
+    // is okay if we ensure it's sufficiently unique or handle potential overwrites if IDs clash,
+    // though clashes are unlikely with timestamped IDs from AI.
+    // If item.id from AI is not suitable as a Firestore doc ID (e.g., contains invalid chars),
+    // it would need sanitization or a new ID generation strategy here.
+    // For now, we assume item.id is valid.
+
+    final DocumentReference docRef = _firestore
+        .collection('users')
+        .doc(userId)
+        .collection('custom_vocabulary')
+        .doc(item.id); // Using the item's ID as the document ID.
+
+    try {
+      await docRef.set(item.toFirestore());
+      if (kDebugMode) {
+        print('FirestoreService: VocabularyItem ${item.id} (${item.word}) saved for user $userId.');
+      }
+    } on FirebaseException catch (e) {
+      if (kDebugMode) {
+        print('FirestoreService: FirebaseException while saving vocabulary item for $userId: ${e.code} - ${e.message}');
+      }
+      throw Exception('Failed to save vocabulary item: ${e.message}');
+    } catch (e) {
+      if (kDebugMode) {
+        print('FirestoreService: Generic exception while saving vocabulary item for $userId: $e');
+      }
+      throw Exception('An unexpected error occurred while saving vocabulary item.');
+    }
+  }
 }

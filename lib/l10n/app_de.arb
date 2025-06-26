@@ -94,5 +94,37 @@
     "placeholders": {
       "points": { "type": "int", "example": "123" }
     }
-  }
+  },
+  "topicsGridTitle": "Themen entdecken",
+  "@topicsGridTitle": { "description": "Titel für den Themenraster-Bereich auf der Startseite" },
+
+  "aiResearchScreenTitle": "KI-Wortrecherche",
+  "enterWordLabel": "Wort eingeben",
+  "enterWordHint": "z.B. Demographie",
+  "searchButtonLabel": "Suchen",
+  "addToVocabularyButtonLabel": "Zur Vokabelliste hinzufügen",
+  "savingButtonLabel": "Speichern...",
+  "definitionTitle": "Definition",
+  "definitionTitleDe": "Definition (DE)",
+  "definitionTitleEn": "Definition (EN)",
+  "definitionTitleEs": "Definition (ES)",
+  "exampleSentencesTitle": "Beispielsätze",
+  "exampleSentencesTitleDe": "Beispielsätze (DE)",
+  "exampleSentencesTitleEn": "Beispielsätze (EN)",
+  "exampleSentencesTitleEs": "Beispielsätze (ES)",
+  "synonymsTitle": "Synonyme",
+  "collocationsTitle": "Kollokationen",
+  "grammarHintTitle": "Grammatik-Hinweis",
+  "contextualTextTitle": "Kontextueller Kurztext",
+  "noResultsMessage": "KI-Ergebnisse werden hier angezeigt.",
+  "enterWordAndSearchMessage": "Geben Sie ein Wort ein und drücken Sie Suchen.",
+  "wordAddedSuccessMessage": "'{word}' wurde zu Ihrer Vokabelliste hinzugefügt!",
+  "@wordAddedSuccessMessage": {
+    "placeholders": { "word": { "type": "String" } }
+  },
+  "errorFetchingResultsGeneric": "Fehler beim Abrufen der Ergebnisse.",
+  "errorSavingVocabularyGeneric": "Fehler beim Speichern in der Vokabelliste.",
+  "noResultToSaveMessage": "Kein Ergebnis zum Speichern vorhanden.",
+  "cannotSaveUserNotLoggedInMessage": "Speichern nicht möglich: Benutzer nicht angemeldet oder Dienst nicht verfügbar.",
+  "pleaseEnterWordMessage": "Bitte geben Sie ein Wort ein."
 }
