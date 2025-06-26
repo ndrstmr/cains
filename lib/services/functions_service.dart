@@ -6,12 +6,44 @@ import 'package:http/http.dart' as http;
 import 'package:myapp/models/challenge_model.dart'; // Assuming ChallengeModel is here
 
 // Provider for FunctionsService (optional, but good practice for dependency injection)
-// import 'package:flutter_riverpod/flutter_riverpod.dart'; // Uncomment if using Riverpod provider
-// final functionsServiceProvider = Provider<FunctionsService>((ref) { // Uncomment if using Riverpod provider
-//   return FunctionsService(FirebaseAuth.instance);
-// });
+import 'package:flutter_riverpod/flutter_riverpod.dart'; // Uncomment if using Riverpod provider
+final functionsServiceProvider = Provider<FunctionsService>((ref) { // Uncomment if using Riverpod provider
+  // It's often better to get FirebaseAuth instance from an authProvider if it exists,
+  // to ensure consistency and testability.
+  // For example: final auth = ref.watch(firebaseAuthProvider);
+  // However, direct use is also common for simplicity.
+  return FunctionsService(FirebaseAuth.instance);
+});
 
 import 'package:cains/models/vocabulary_item.dart'; // Import VocabularyItem
+import 'package:firebase_functions/firebase_functions.dart';
+import 'dart:ui'; // For Rect
+
+// Represents a single word recognized by OCR, along with its bounding box.
+class RecognizedWord {
+  final String text;
+  final Rect bounds; // Using dart:ui Rect for convenience in Flutter
+
+  RecognizedWord({required this.text, required this.bounds});
+
+  factory RecognizedWord.fromJson(Map<String, dynamic> json) {
+    final Map<String, dynamic> boundsMap = json['bounds'] as Map<String, dynamic>;
+    return RecognizedWord(
+      text: json['text'] as String,
+      bounds: Rect.fromLTWH(
+        (boundsMap['x'] as num).toDouble(),
+        (boundsMap['y'] as num).toDouble(),
+        (boundsMap['width'] as num).toDouble(),
+        (boundsMap['height'] as num).toDouble(),
+      ),
+    );
+  }
+
+  @override
+  String toString() {
+    return 'RecognizedWord(text: $text, bounds: $bounds)';
+  }
+}
 
 class FunctionsService {
   final FirebaseAuth _firebaseAuth;
@@ -251,6 +283,88 @@ class FunctionsService {
       if (e is Exception && e.toString().contains('Authentication error')) rethrow;
 
       throw Exception('An unexpected error occurred: ${e.toString()}');
+    }
+  }
+
+  /// Calls the 'processImageForOcr' Firebase Cloud Function.
+  ///
+  /// [base64Image]: The Base64 encoded string of the image.
+  /// [mimeType]: Optional. The MIME type of the image (e.g., "image/jpeg").
+  /// Returns a list of [RecognizedWord] objects.
+  /// Throws an exception if the user is not authenticated, if there's a network/server error,
+  /// or if the function returns an error.
+  Future<List<RecognizedWord>> callProcessImageForOcr(
+    String base64Image, {
+    String? mimeType,
+  }) async {
+    // No need to check _firebaseAuth.currentUser here, as HttpsCallable handles authentication implicitly.
+    // If the user is not authenticated, FirebaseFunctions will return an error.
+
+    if (base64Image.trim().isEmpty) {
+      if (kDebugMode) {
+        print('FunctionsService: base64Image cannot be empty for processImageForOcr.');
+      }
+      throw Exception('Image data cannot be empty.');
+    }
+
+    try {
+      // It's good practice to specify the region if your functions are not in us-central1
+      // FirebaseFunctions.instanceFor(region: 'europe-west1')
+      // For now, using the default region.
+      final callable = FirebaseFunctions.instance.httpsCallable('processImageForOcr');
+
+      final Map<String, dynamic> params = {
+        'imageData': base64Image,
+      };
+      if (mimeType != null && mimeType.isNotEmpty) {
+        params['mimeType'] = mimeType;
+      }
+
+      if (kDebugMode) {
+        print('FunctionsService: Calling processImageForOcr with image data length: ${base64Image.length}, mimeType: $mimeType');
+      }
+
+      final HttpsCallableResult result = await callable.call(params);
+
+      if (kDebugMode) {
+        print('FunctionsService: processImageForOcr response data: ${result.data}');
+      }
+
+      // The Cloud Function returns a Map: { "words": [ { "text": "...", "bounds": { ... } }, ... ] }
+      final Map<String, dynamic> data = result.data as Map<String, dynamic>;
+      final List<dynamic> wordsList = data['words'] as List<dynamic>;
+
+      final List<RecognizedWord> recognizedWords = wordsList
+          .map((wordData) => RecognizedWord.fromJson(wordData as Map<String, dynamic>))
+          .toList();
+
+      if (kDebugMode) {
+        print('FunctionsService: Parsed ${recognizedWords.length} words.');
+      }
+      return recognizedWords;
+
+    } on FirebaseFunctionsException catch (e) {
+      if (kDebugMode) {
+        print('FunctionsService: FirebaseFunctionsException in callProcessImageForOcr:');
+        print('Code: ${e.code}');
+        print('Message: ${e.message}');
+        print('Details: ${e.details}');
+      }
+      // Provide a more user-friendly message based on the error code
+      String userMessage = 'Failed to process image. Please try again.';
+      if (e.code == 'unauthenticated') {
+        userMessage = 'Authentication error. Please sign in again.';
+      } else if (e.code == 'invalid-argument') {
+        userMessage = 'Invalid data sent to image processor. Please select a valid image.';
+      } else if (e.code == 'internal') {
+        userMessage = 'An internal server error occurred while processing the image.';
+      }
+      throw Exception(userMessage);
+    } catch (e) {
+      if (kDebugMode) {
+        print('FunctionsService: Generic Exception in callProcessImageForOcr: $e');
+      }
+      throw Exception('An unexpected error occurred while processing the image: ${e.toString()}');
     }
   }
 }

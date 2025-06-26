@@ -195,6 +195,178 @@ export const generateDailyChallenge = functions.https.onRequest(
   }
 );
 
+// region OCR Function
+// -----------------------------------------------------------------------------
+
+// Imports for Google Cloud Vision API
+import * as vision from "@google-cloud/vision";
+
+interface OcrRequestData {
+  imageData: string; // Base64 encoded image string
+  mimeType?: string; // Optional: e.g., "image/png", "image/jpeg"
+}
+
+interface WordData {
+  text: string;
+  bounds: {
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+  };
+}
+
+interface OcrResponseData {
+  words: WordData[];
+}
+
+/**
+ * Processes an image using Google Cloud Vision API to extract text and bounding boxes.
+ * This is an HttpsCallable function.
+ *
+ * @param data The request data.
+ * @param data.imageData Base64 encoded string of the image.
+ * @param data.mimeType Optional. The MIME type of the image.
+ * @param context The context of the function call, including authentication details.
+ * @returns A Promise that resolves with an OcrResponseData object.
+ * @throws An HttpsError if authentication fails, input is invalid, or an API error occurs.
+ */
+export const processImageForOcr = functions.https.onCall(
+  async (data: OcrRequestData, context): Promise<OcrResponseData> => {
+    // 1. Authentication
+    if (!context.auth) {
+      functions.logger.warn("processImageForOcr: Unauthenticated call.");
+      throw new functions.https.HttpsError(
+        "unauthenticated",
+        "The function must be called while authenticated."
+      );
+    }
+    const userId = context.auth.uid;
+    functions.logger.info(
+      `processImageForOcr called by user ${userId}. Image data length (chars): ${data.imageData?.length}`
+    );
+
+    // 2. Input Validation
+    if (!data.imageData || typeof data.imageData !== "string") {
+      functions.logger.warn("processImageForOcr: Missing or invalid imageData.", {
+        userId,
+      });
+      throw new functions.https.HttpsError(
+        "invalid-argument",
+        "The function must be called with a valid 'imageData' string."
+      );
+    }
+
+    // 3. Initialize Vision Client
+    // It's generally recommended to initialize clients outside the function scope
+    // if they can be reused across invocations for better performance.
+    // However, for simplicity and to ensure fresh credentials, initializing here is also common.
+    // For production, consider initializing `vision.ImageAnnotatorClient()` globally.
+    const client = new vision.ImageAnnotatorClient();
+
+    try {
+      // 4. Prepare Image Request
+      // Remove potential Base64 prefix (e.g., "data:image/jpeg;base64,")
+      const base64Image = data.imageData.startsWith("data:") ?
+        data.imageData.substring(data.imageData.indexOf(",") + 1) :
+        data.imageData;
+
+      const imageRequest = {
+        image: {
+          content: base64Image,
+        },
+        features: [{type: "TEXT_DETECTION"}],
+        // Optionally, add imageContext for language hints if known
+        // imageContext: {
+        //   languageHints: ["de", "en"], // Prioritize German and English
+        // },
+      };
+
+      // 5. Call Vision API
+      functions.logger.info(
+        `Calling Vision API for text detection for user ${userId}.`
+      );
+      const [visionResult] = await client.textDetection(imageRequest);
+      functions.logger.info(
+        `Vision API response received for user ${userId}.`
+      );
+
+
+      // 6. Process Results
+      if (visionResult.error) {
+        functions.logger.error(
+          `Vision API returned an error for user ${userId}:`,
+          visionResult.error
+        );
+        throw new functions.https.HttpsError(
+          "internal",
+          `Vision API Error: ${visionResult.error.message}`
+        );
+      }
+
+      const words: WordData[] = [];
+      const textAnnotations = visionResult.textAnnotations;
+
+      if (textAnnotations && textAnnotations.length > 0) {
+        // The first annotation (index 0) is typically the full detected text block.
+        // Subsequent annotations are individual words or symbols.
+        // We iterate from the second element to get individual words.
+        for (let i = 1; i < textAnnotations.length; i++) {
+          const annotation = textAnnotations[i];
+          if (annotation.description && annotation.boundingPoly?.vertices) {
+            const vertices = annotation.boundingPoly.vertices;
+            // Calculate bounds: min/max x and y
+            const xCoordinates = vertices.map((v) => v.x || 0);
+            const yCoordinates = vertices.map((v) => v.y || 0);
+
+            const minX = Math.min(...xCoordinates);
+            const minY = Math.min(...yCoordinates);
+            const maxX = Math.max(...xCoordinates);
+            const maxY = Math.max(...yCoordinates);
+
+            words.push({
+              text: annotation.description,
+              bounds: {
+                x: minX,
+                y: minY,
+                width: maxX - minX,
+                height: maxY - minY,
+              },
+            });
+          }
+        }
+        functions.logger.info(
+          `Extracted ${words.length} words for user ${userId}.`
+        );
+      } else {
+        functions.logger.info(
+          `No text annotations found in Vision API response for user ${userId}.`
+        );
+      }
+
+      // 7. Format Output
+      return {words};
+    } catch (error) {
+      functions.logger.error(
+        `Error in processImageForOcr for user ${userId}:`,
+        error
+      );
+      if (error instanceof functions.https.HttpsError) {
+        throw error; // Re-throw HttpsError directly
+      }
+      // For other errors, wrap them in a generic HttpsError
+      let errorMessage = "Internal server error during image processing.";
+      if (error instanceof Error) {
+        errorMessage = error.message;
+      }
+      throw new functions.https.HttpsError("internal", errorMessage);
+    }
+  }
+);
+
+// endregion
+// -----------------------------------------------------------------------------
+
 // Interface for the expected request body for generateAiDefinition
 interface GenerateAiDefinitionRequest {
   word: string;

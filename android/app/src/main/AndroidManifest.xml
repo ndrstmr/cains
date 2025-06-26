@@ -1,4 +1,16 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Permissions for image_picker -->
+    <uses-permission android:name="android.permission.CAMERA" />
+    <!-- For older Android versions or if direct gallery access beyond the picker is needed:
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    For Android 13 (API 33) and above, if you need to access photos/videos from other apps:
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+    <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
+    Generally, for image_picker with ImageSource.gallery, these are often not needed
+    as the system picker handles access. CAMERA is essential for ImageSource.camera.
+    -->
+
     <application
         android:label="myapp"
         android:name="${applicationName}"

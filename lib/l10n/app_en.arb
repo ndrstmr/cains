@@ -220,5 +220,39 @@
   "cannotSaveUserNotLoggedInMessage": "Cannot save: User not logged in or service unavailable.",
   "@cannotSaveUserNotLoggedInMessage": { "description": "Error message for save attempt when user is not logged in" },
   "pleaseEnterWordMessage": "Please enter a word.",
-  "@pleaseEnterWordMessage": { "description": "Validation message to enter a word before searching" }
+  "@pleaseEnterWordMessage": { "description": "Validation message to enter a word before searching" },
+
+  "imageScanScreenTitle": "Text Recognition",
+  "@imageScanScreenTitle": { "description": "AppBar title for the Image Scan screen" },
+  "pickFromGalleryButton": "Gallery",
+  "@pickFromGalleryButton": { "description": "Button label to pick an image from gallery" },
+  "takePictureButton": "Camera",
+  "@takePictureButton": { "description": "Button label to take a picture with camera" },
+  "processImageButton": "Recognize Text",
+  "@processImageButton": { "description": "Button label to start OCR processing" },
+  "resetButton": "Reset",
+  "@resetButton": { "description": "Button label to reset the image scan state" },
+  "selectImagePrompt": "Select an image or take a photo to start.",
+  "@selectImagePrompt": { "description": "Placeholder text when no image is selected on Image Scan screen" },
+  "wordTappedMessage": "Tapped: {word}",
+  "@wordTappedMessage": {
+    "description": "Snackbar message prefix when a recognized word is tapped.",
+    "placeholders": { "word": { "type": "String", "example": "Hello" } }
+  },
+  "mustBeLoggedInToSaveError": "You must be logged in to save words.",
+  "@mustBeLoggedInToSaveError": { "description": "Error message if user tries to save a word without being logged in." },
+  "scannedFromImageDefaultDef": "Scanned from image",
+  "@scannedFromImageDefaultDef": { "description": "Default definition for a vocabulary item created from a scanned image." },
+  "wordSavedSuccessMessage": "\"{word}\" saved!",
+  "@wordSavedSuccessMessage": {
+    "description": "Success message when a scanned word is saved to vocabulary.",
+    "placeholders": { "word": { "type": "String", "example": "Technology" } }
+  },
+  "wordSaveFailedError": "Failed to save word: {error}",
+  "@wordSaveFailedError": {
+    "description": "Error message when saving a scanned word to vocabulary fails.",
+    "placeholders": { "error": { "type": "String", "example": "Network error" } }
+  },
+  "imageScanButtonTitle": "Scan Text from Image",
+  "@imageScanButtonTitle": { "description": "Button label on Home screen to navigate to Image Scan feature" }
 }
