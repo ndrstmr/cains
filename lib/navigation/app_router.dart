@@ -42,6 +42,8 @@ class ErrorScreen extends StatelessWidget {
   }
 }
 
+import 'package:myapp/screens/ai_research_screen.dart'; // Import AIResearchScreen
+
 // Enum for route names for type safety and easy access
 enum AppRoute {
   splash('/splash'),
@@ -50,7 +52,8 @@ enum AppRoute {
   home('/home'),
   wordgrid('/wordgrid'),
   research('/research'),
-  scan('/scan');
+  scan('/scan'),
+  aiResearch('/ai-research'); // New route for AI Research
 
   const AppRoute(this.path);
   final String path;
@@ -123,6 +126,15 @@ final goRouterProvider = Provider<GoRouter>((ref) {
         path: AppRoute.scan.path,
         name: AppRoute.scan.name,
         builder: (context, state) => const ScanScreen(),
+      ),
+      GoRoute(
+        path: AppRoute.aiResearch.path,
+        name: AppRoute.aiResearch.name,
+        builder: (context, state) => const AIResearchScreen(),
+        // This route should also be protected, ensuring user is logged in.
+        // The global redirect logic already handles redirecting to login if not authenticated
+        // and not on an auth flow page. So, specific protection here might be redundant
+        // if all non-auth pages should be protected.
       ),
     ],
     errorBuilder: (context, state) => ErrorScreen(error: state.error),

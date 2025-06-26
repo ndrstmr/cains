@@ -194,3 +194,144 @@ export const generateDailyChallenge = functions.https.onRequest(
     }
   }
 );
+
+// Interface for the expected request body for generateAiDefinition
+interface GenerateAiDefinitionRequest {
+  word: string;
+}
+
+// Interface for the AI-generated vocabulary item structure (matches VocabularyItem in Flutter app)
+// This is a more detailed version for the AI function's output.
+interface AiVocabularyOutput {
+  id: string; // Will be generated (e.g., "ai-" + word + timestamp)
+  word: string; // The input word
+  definitions: { [key: string]: string }; // e.g., { "de": "...", "en": "...", "es": "..." }
+  synonyms: string[]; // e.g., ["synonym1", "synonym2"]
+  collocations: string[]; // e.g., ["collocation1", "collocation2"]
+  exampleSentences: { [key: string]: string[] }; // e.g., { "de": ["satz1", "satz2"], "en": ["sentence1"] }
+  level: string; // Default C1
+  sourceType: string; // Will be "ai_added"
+  topicId: string; // Default "ai_researched"
+  grammarHint?: string; // e.g., "Noun, feminine"
+  contextualText?: string; // e.g., "Used in formal contexts..."
+}
+
+
+/**
+ * Generates AI-based information for a given word.
+ * Expects an Authorization: Bearer <ID_TOKEN> header and a JSON body { "word": "example" }.
+ */
+export const generateAiDefinition = functions.https.onRequest(
+  async (request, response) => {
+    // Enable CORS
+    response.set("Access-Control-Allow-Origin", "*");
+    response.set("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+    response.set("Access-Control-Allow-Headers", "Content-Type, Authorization");
+
+    if (request.method === "OPTIONS") {
+      response.status(204).send("");
+      return;
+    }
+
+    // Authentication
+    if (!request.auth || !request.auth.uid) {
+      functions.logger.warn("Unauthorized call to generateAiDefinition: No UID", {auth: request.auth});
+      response.status(401).send({error: {message: "Unauthorized. User must be authenticated."}});
+      return;
+    }
+    const userId = request.auth.uid;
+    functions.logger.info(`generateAiDefinition called by user ${userId}`);
+
+    // Validate request body
+    if (request.method !== "POST") {
+      response.status(405).send({error: {message: "Method Not Allowed. Please use POST."}});
+      return;
+    }
+
+    const requestBody = request.body as GenerateAiDefinitionRequest;
+    const wordToDefine = requestBody.word;
+
+    if (!wordToDefine || typeof wordToDefine !== "string" || wordToDefine.trim() === "") {
+      functions.logger.warn("generateAiDefinition: Missing or invalid 'word' in request.", {body: request.body});
+      response.status(400).send({error: {message: "Bad Request. Please provide a 'word' in the JSON body."}});
+      return;
+    }
+
+    functions.logger.info(`User ${userId} requested definition for word: "${wordToDefine}"`);
+
+    // TODO: Implement Google Gemini Pro API call
+    // 1. Get API Key from environment variables (e.g., functions.config().gemini.apikey)
+    //    Ensure it's set: firebase functions:config:set gemini.apikey="YOUR_API_KEY"
+    // const apiKey = functions.config().gemini?.apikey;
+    // if (!apiKey) {
+    //   functions.logger.error("Gemini API key not configured.");
+    //   response.status(500).send({ error: { message: "Internal server error: AI service not configured." } });
+    //   return;
+    // }
+    // 2. Construct the prompt for Gemini API.
+    //    Prompt should request all necessary fields:
+    //    - Definitions in German, English, Spanish (C1 level)
+    //    - Min. 2 example sentences per language
+    //    - Min. 3 synonyms
+    //    - Min. 3 collocations
+    //    - Grammar hint (e.g., "Nomen, feminin")
+    //    - Contextual short text (when the word is used)
+    //    - Request output in a structured JSON format if possible, or parseable text.
+
+    // 3. Make the API call to Gemini. (Using a placeholder for now)
+    //    Example using a hypothetical SDK or fetch:
+    //    const geminiResponse = await callGeminiApi(apiKey, prompt, wordToDefine);
+
+    // 4. Parse the Gemini response and map it to AiVocabularyOutput structure.
+
+    // Placeholder for AI response:
+    try {
+      // Simulate AI processing time
+      await new Promise((resolve) => setTimeout(resolve, 1500));
+
+      const generatedId = `ai-${wordToDefine.toLowerCase().replace(/\s+/g, "-")}-${Date.now()}`;
+
+      const mockAiData: AiVocabularyOutput = {
+        id: generatedId,
+        word: wordToDefine,
+        definitions: {
+          de: `Mock Definition für ${wordToDefine} auf Deutsch (C1 Niveau).`,
+          en: `Mock definition for ${wordToDefine} in English (C1 level).`,
+          es: `Definición simulada para ${wordToDefine} en español (nivel C1).`,
+        },
+        synonyms: ["MockSynonym1", "MockSynonym2", "MockSynonym3"],
+        collocations: [`häufig mit ${wordToDefine}`, `${wordToDefine} verwenden`, `typisch für ${wordToDefine}`],
+        exampleSentences: {
+          de: [
+            `Dies ist ein Beispielsatz für ${wordToDefine}.`,
+            `Ein weiterer deutscher Satz, der ${wordToDefine} enthält.`,
+          ],
+          en: [
+            `This is an example sentence for ${wordToDefine}.`,
+            `Another English sentence containing ${wordToDefine}.`,
+          ],
+          es: [
+            `Esta es una frase de ejemplo para ${wordToDefine}.`,
+            `Otra frase en español que contiene ${wordToDefine}.`,
+          ],
+        },
+        level: "C1",
+        sourceType: "ai_added", // This should match SourceType enum string representation
+        topicId: "ai_researched", // A generic topic ID for AI-added words
+        grammarHint: "MockGrammar (z.B. Nomen, feminin)",
+        contextualText: `Dieses Wort '${wordToDefine}' wird typischerweise in mock Kontexten verwendet, um seine mock Natur zu unterstreichen.`,
+      };
+
+      functions.logger.info(`Successfully generated mock AI definition for "${wordToDefine}" for user ${userId}`);
+      response.status(200).send(mockAiData);
+    } catch (error) {
+      functions.logger.error(`Error during AI generation placeholder for word "${wordToDefine}" for user ${userId}:`, error);
+      // Type guard for error
+      let errorMessage = "Failed to generate AI definition due to an internal error.";
+      if (error instanceof Error) {
+        errorMessage = error.message;
+      }
+      response.status(500).send({error: {message: errorMessage}});
+    }
+  }
+);

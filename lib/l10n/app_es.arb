@@ -87,5 +87,37 @@
   "languageCodeEn": "EN",
   "@languageCodeEn": { "description": "Abreviatura para el idioma inglés." },
   "languageCodeEs": "ES",
-  "@languageCodeEs": { "description": "Abreviatura para el idioma español." }
+  "@languageCodeEs": { "description": "Abreviatura para el idioma español." },
+  "topicsGridTitle": "Explorar Temas",
+  "@topicsGridTitle": { "description": "Título para la sección de la cuadrícula de temas en la pantalla de inicio" },
+
+  "aiResearchScreenTitle": "Investigación de Palabras con IA",
+  "enterWordLabel": "Ingresar palabra",
+  "enterWordHint": "p.ej. Demografía",
+  "searchButtonLabel": "Buscar",
+  "addToVocabularyButtonLabel": "Añadir a la lista de vocabulario",
+  "savingButtonLabel": "Guardando...",
+  "definitionTitle": "Definición",
+  "definitionTitleDe": "Definición (DE)",
+  "definitionTitleEn": "Definición (EN)",
+  "definitionTitleEs": "Definición (ES)",
+  "exampleSentencesTitle": "Frases de ejemplo",
+  "exampleSentencesTitleDe": "Frases de ejemplo (DE)",
+  "exampleSentencesTitleEn": "Frases de ejemplo (EN)",
+  "exampleSentencesTitleEs": "Frases de ejemplo (ES)",
+  "synonymsTitle": "Sinónimos",
+  "collocationsTitle": "Colocaciones",
+  "grammarHintTitle": "Indicación gramatical",
+  "contextualTextTitle": "Texto contextual breve",
+  "noResultsMessage": "Los resultados de la IA se mostrarán aquí.",
+  "enterWordAndSearchMessage": "Ingrese una palabra y presione Buscar.",
+  "wordAddedSuccessMessage": "¡'{word}' se añadió a tu lista de vocabulario!",
+  "@wordAddedSuccessMessage": {
+    "placeholders": { "word": { "type": "String" } }
+  },
+  "errorFetchingResultsGeneric": "Error al obtener los resultados.",
+  "errorSavingVocabularyGeneric": "Error al guardar en el vocabulario.",
+  "noResultToSaveMessage": "No hay resultado para guardar.",
+  "cannotSaveUserNotLoggedInMessage": "No se puede guardar: Usuario no autenticado o servicio no disponible.",
+  "pleaseEnterWordMessage": "Por favor ingrese una palabra."
 }

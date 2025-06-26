@@ -214,7 +214,32 @@ class HomeScreen extends ConsumerWidget {
             ),
 
           // Daily Challenge Section
- _DailyChallengeSection(currentChallenge: currentChallenge, todayChallengeAsyncValue: todayChallengeAsyncValue),
+          _DailyChallengeSection(currentChallenge: currentChallenge, todayChallengeAsyncValue: todayChallengeAsyncValue),
+
+          // AI Research Button
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+            child: ElevatedButton.icon(
+              icon: const Icon(Icons.psychology_outlined), // Or Icons.search_outlined, Icons.lightbulb_outline
+              label: Text(localizations.aiWordResearchButton), // Changed to use existing key
+              onPressed: () {
+                GoRouter.of(context).go(AppRoute.aiResearch.path);
+              },
+              style: ElevatedButton.styleFrom(
+                padding: const EdgeInsets.symmetric(vertical: 12.0),
+                textStyle: Theme.of(context).textTheme.titleMedium,
+              ),
+            ),
+          ),
+
+          // Topics Grid Title
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+            child: Text(
+              localizations.topicsGridTitle, // "Explore Topics"
+              style: Theme.of(context).textTheme.titleLarge,
+            ),
+          ),
 
           // Topics Grid
           Expanded(

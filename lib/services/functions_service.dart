@@ -6,21 +6,26 @@ import 'package:http/http.dart' as http;
 import 'package:myapp/models/challenge_model.dart'; // Assuming ChallengeModel is here
 
 // Provider for FunctionsService (optional, but good practice for dependency injection)
-// final functionsServiceProvider = Provider<FunctionsService>((ref) {
+// import 'package:flutter_riverpod/flutter_riverpod.dart'; // Uncomment if using Riverpod provider
+// final functionsServiceProvider = Provider<FunctionsService>((ref) { // Uncomment if using Riverpod provider
 //   return FunctionsService(FirebaseAuth.instance);
 // });
 
+import 'package:cains/models/vocabulary_item.dart'; // Import VocabularyItem
+
 class FunctionsService {
   final FirebaseAuth _firebaseAuth;
-  // TODO: Replace with your actual cloud function region and project ID, or use FirebaseFunctions SDK for callable.
+  // TODO: Replace with your actual cloud function region and project ID.
   // For https.onRequest, the URL is typically:
   // https://<REGION>-<PROJECT_ID>.cloudfunctions.net/<FUNCTION_NAME>
   // Example: "https://us-central1-your-project-id.cloudfunctions.net/generateDailyChallenge"
   // It's best to make this configurable or discoverable if possible.
   final String _cloudFunctionBaseUrl;
+  final http.Client _httpClient;
 
-  FunctionsService(this._firebaseAuth, {String? cloudFunctionBaseUrl})
-    : _cloudFunctionBaseUrl = cloudFunctionBaseUrl ?? _getDefaultBaseUrl();
+  FunctionsService(this._firebaseAuth, {String? cloudFunctionBaseUrl, http.Client? httpClient})
+    : _cloudFunctionBaseUrl = cloudFunctionBaseUrl ?? _getDefaultBaseUrl(),
+      _httpClient = httpClient ?? http.Client();
 
   static String _getDefaultBaseUrl() {
     // This is a placeholder. In a real app, you'd get this from config.
@@ -102,6 +107,150 @@ class FunctionsService {
         print('FunctionsService: Exception in generateAndGetDailyChallenge: $e');
       }
       rethrow; // Rethrow for UI to handle
+    }
+  }
+
+  /// Calls the 'generateAiDefinition' Firebase Cloud Function.
+  ///
+  /// [word]: The word to get a definition for.
+  /// Returns a [VocabularyItem] if successful.
+  /// Throws an exception if the user is not authenticated, if there's a network/server error,
+  /// or if the function returns an error.
+  Future<VocabularyItem> callGenerateAiDefinition(String word) async {
+    final User? currentUser = _firebaseAuth.currentUser;
+
+    if (currentUser == null) {
+      if (kDebugMode) {
+        print('FunctionsService: User not authenticated. Cannot call generateAiDefinition.');
+      }
+      throw Exception('User not authenticated. Please sign in.');
+    }
+
+    if (word.trim().isEmpty) {
+      if (kDebugMode) {
+        print('FunctionsService: Word cannot be empty for generateAiDefinition.');
+      }
+      throw Exception('Word cannot be empty.');
+    }
+
+    try {
+      final String token = await currentUser.getIdToken(true); // Force refresh token
+      final Uri url = Uri.parse('$_cloudFunctionBaseUrl/generateAiDefinition');
+
+      if (kDebugMode) {
+        print('FunctionsService: Calling generateAiDefinition at $url for word: "$word"');
+      }
+
+      final response = await http.post(
+        url,
+        headers: {
+          'Authorization': 'Bearer $token',
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode({'word': word.trim()}),
+      );
+
+      if (kDebugMode) {
+        print('FunctionsService: generateAiDefinition response status: ${response.statusCode}');
+        print('FunctionsService: generateAiDefinition response body: ${response.body}');
+      }
+
+      if (response.statusCode == 200) {
+        final responseData = jsonDecode(response.body);
+
+        // The cloud function is expected to return data that directly maps to VocabularyItem fields.
+        // It also needs an 'id' and 'topicId', which we might need to generate client-side
+        // or the function needs to provide them or suitable defaults.
+        // For now, assume the function returns a complete VocabularyItem structure,
+        // including a temporary or generated ID if necessary.
+        // If 'id' is not provided by the function, we might use word + timestamp or similar,
+        // or let Firestore generate it upon saving.
+        // For 'topicId', we can use a default like 'ai_researched'.
+
+        // Let's assume the function returns a JSON that can be directly used to create a VocabularyItem.
+        // If the function returns the fields of VocabularyItem, but not 'id', 'sourceType', 'topicId',
+        // we would need to augment it here.
+        // Example:
+        // final Map<String, dynamic> itemData = responseData as Map<String, dynamic>;
+        // itemData['id'] = responseData['id'] ?? 'temp-${DateTime.now().millisecondsSinceEpoch}'; // Or handle ID generation strategy
+        // itemData['sourceType'] = SourceType.ai_added.toString().split('.').last; // Ensure this matches enum storage
+        // itemData['topicId'] = responseData['topicId'] ?? 'ai_researched'; // Default topicId
+        // itemData['level'] = responseData['level'] ?? 'C1'; // Default level
+
+        // The prompt says: "Ausgabe: JSON-Format entsprechend VocabularyItem Modell"
+        // This implies the function should return all necessary fields.
+        // The VocabularyItem.fromFirestore expects a DocumentSnapshot, which is not what we have here.
+        // We need a factory method like VocabularyItem.fromJson(Map<String, dynamic> json, String id)
+        // or the function needs to return an 'id'.
+
+        // For now, let's assume the function returns a JSON that can be directly passed
+        // to a hypothetical VocabularyItem.fromJson method or that all fields including a temporary ID are returned.
+        // Let's refine VocabularyItem to have a .fromJson constructor.
+
+        // Assuming the function returns data directly usable by a fromJson factory
+        // and 'id' might be part of the response or needs to be handled.
+        // For now, let's construct it manually based on the expected fields.
+        // This part will need adjustment based on the exact JSON structure returned by the cloud function.
+
+        final Map<String, dynamic> data = responseData as Map<String, dynamic>;
+
+        // Ensure 'id' is present in the data from the cloud function, or generate one if necessary.
+        // The VocabularyItem.fromJson factory expects 'id'.
+        // If the Cloud Function guarantees an 'id', this check can be simpler.
+        if (!data.containsKey('id') || data['id'] == null) {
+          // If ID is critical and must come from the function, this should be an error.
+          // For now, let's generate a temporary one if missing, but flag it.
+          if (kDebugMode) {
+            print("FunctionsService: 'id' field missing in response from generateAiDefinition. Generating temporary ID.");
+          }
+          data['id'] = 'temp-ai-${word.trim()}-${DateTime.now().millisecondsSinceEpoch}';
+        }
+
+        // The 'sourceType' should ideally be set by the backend or be inferred.
+        // If not provided, default to 'ai_added'.
+        if (!data.containsKey('sourceType') || data['sourceType'] == null) {
+            data['sourceType'] = SourceType.ai_added.toString().split('.').last;
+        }
+
+        // Default 'topicId' if not provided.
+        if (!data.containsKey('topicId') || data['topicId'] == null) {
+            data['topicId'] = 'ai_researched';
+        }
+
+        return VocabularyItem.fromJson(data);
+
+      } else {
+        String errorMessage = 'Failed to get AI definition.';
+        try {
+          final errorData = jsonDecode(response.body);
+          errorMessage = errorData['error']?['message'] as String? ?? errorData['message'] as String? ?? errorData['error'] as String? ?? errorMessage;
+        } catch (e) {
+          // Ignore parsing error, use default message
+          if (kDebugMode) {
+            print('FunctionsService: Could not parse error response body: ${response.body}');
+          }
+        }
+        if (kDebugMode) {
+          print('FunctionsService: Error calling generateAiDefinition: ${response.statusCode} - $errorMessage');
+        }
+        throw Exception(errorMessage);
+      }
+    } on FirebaseAuthException catch (e) {
+      if (kDebugMode) {
+        print('FunctionsService: FirebaseAuthException while getting ID token: ${e.code} - ${e.message}');
+      }
+      throw Exception('Authentication error: ${e.message}');
+    } catch (e) {
+      if (kDebugMode) {
+        print('FunctionsService: Exception in callGenerateAiDefinition: $e');
+      }
+      // Avoid rethrowing generic "Exception" if it's already a more specific one from above
+      if (e is Exception && e.toString().contains('User not authenticated')) rethrow;
+      if (e is Exception && e.toString().contains('Word cannot be empty')) rethrow;
+      if (e is Exception && e.toString().contains('Failed to get AI definition')) rethrow;
+      if (e is Exception && e.toString().contains('Authentication error')) rethrow;
+
+      throw Exception('An unexpected error occurred: ${e.toString()}');
     }
   }
 }

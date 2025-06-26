@@ -43,6 +43,12 @@ class VocabularyItem {
   /// The identifier of the topic this vocabulary item belongs to.
   final String topicId;
 
+  /// A short grammar hint for the word (e.g., "Noun, feminine").
+  final String? grammarHint;
+
+  /// A short contextual text explaining when the word is typically used.
+  final String? contextualText;
+
   /// Constructs a [VocabularyItem].
   VocabularyItem({
     required this.id,
@@ -54,7 +60,32 @@ class VocabularyItem {
     this.level = 'C1', // Default level to C1
     required this.sourceType,
     required this.topicId,
+    this.grammarHint,
+    this.contextualText,
   });
+
+  /// Creates a [VocabularyItem] from a JSON map.
+  /// Expects 'id' to be present in the JSON map.
+  factory VocabularyItem.fromJson(Map<String, dynamic> json) {
+    return VocabularyItem(
+      id: json['id'] as String,
+      word: json['word'] as String,
+      definitions: Map<String, String>.from(json['definitions'] as Map),
+      synonyms: List<String>.from(json['synonyms'] as List),
+      collocations: List<String>.from(json['collocations'] as List),
+      exampleSentences: (json['exampleSentences'] as Map<String, dynamic>).map(
+        (key, value) => MapEntry(key, List<String>.from(value as List)),
+      ),
+      level: json['level'] as String? ?? 'C1',
+      sourceType: SourceType.values.firstWhere(
+        (e) => e.toString().split('.').last == (json['sourceType'] as String? ?? SourceType.ai_added.toString().split('.').last),
+        orElse: () => SourceType.ai_added,
+      ),
+      topicId: json['topicId'] as String? ?? 'ai_researched',
+      grammarHint: json['grammarHint'] as String?,
+      contextualText: json['contextualText'] as String?,
+    );
+  }
 
   /// Creates a [VocabularyItem] from a Firestore document snapshot.
   factory VocabularyItem.fromFirestore(DocumentSnapshot<Map<String, dynamic>> snapshot) {
@@ -78,6 +109,8 @@ class VocabularyItem {
         orElse: () => SourceType.predefined, // Default if parsing fails
       ),
       topicId: data['topicId'] as String,
+      grammarHint: data['grammarHint'] as String?,
+      contextualText: data['contextualText'] as String?,
     );
   }
 
@@ -92,6 +125,8 @@ class VocabularyItem {
       'level': level,
       'sourceType': sourceType.toString().split('.').last, // Store enum as string
       'topicId': topicId,
+      if (grammarHint != null) 'grammarHint': grammarHint,
+      if (contextualText != null) 'contextualText': contextualText,
     };
   }
 }
