@@ -1,9 +1,14 @@
 import * as functions from "firebase-functions";
-import *ానికిadmin from "firebase-admin";
+import * as admin from "firebase-admin";
 
 // Initialize Firebase Admin SDK
 admin.initializeApp();
 const db = admin.firestore();
+
+// Allowed origins for CORS checks
+const allowedOrigins = [
+  'https://your.app.com',
+];
 
 // Define interfaces for our data structures (simplified)
 interface Topic {
@@ -39,14 +44,13 @@ interface DailyChallenge {
  */
 export const generateDailyChallenge = functions.https.onRequest(
   async (request, response) => {
-    // Enable CORS for local testing and if calling from a web app.
-    // For production, configure origins more strictly.
-    response.set("Access-Control-Allow-Origin", "*");
+    // Enable CORS for allowed origins only
+    const origin = request.headers.origin ?? "";
+    if (allowedOrigins.includes(origin)) {
+      response.set("Access-Control-Allow-Origin", origin);
+    }
     response.set("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
-    response.set(
-      "Access-Control-Allow-Headers",
-      "Content-Type, Authorization"
-    );
+    response.set("Access-Control-Allow-Headers", "Content-Type, Authorization");
 
     if (request.method === "OPTIONS") {
       response.status(204).send("");
@@ -395,8 +399,11 @@ interface AiVocabularyOutput {
  */
 export const generateAiDefinition = functions.https.onRequest(
   async (request, response) => {
-    // Enable CORS
-    response.set("Access-Control-Allow-Origin", "*");
+    // Enable CORS for allowed origins only
+    const origin = request.headers.origin ?? "";
+    if (allowedOrigins.includes(origin)) {
+      response.set("Access-Control-Allow-Origin", origin);
+    }
     response.set("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
     response.set("Access-Control-Allow-Headers", "Content-Type, Authorization");
 
