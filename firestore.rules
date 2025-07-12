@@ -16,11 +16,8 @@ service cloud.firestore {
       // - If clients were to create/update challenges directly, this rule would apply.
       match /daily_challenges/{challengeId} {
         allow read: if request.auth.uid == userId;
-        // Allow create/update if done by the user themselves OR by a trusted server process (which bypasses rules).
-        // The rule below allows users to create/update their own challenges.
-        // If only the cloud function should write, then these could be more restrictive or removed,
-        // relying on the function's own logic and Admin SDK bypass.
-        allow create, update: if request.auth.uid == userId;
+        // Daily challenges should be generated only by Cloud Functions.
+        allow create, update: if false;
       }
     }
 
