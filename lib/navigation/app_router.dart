@@ -169,22 +169,25 @@ final goRouterProvider = Provider<GoRouter>((ref) {
         return null;
       }
 
-      // If not logged in and not on an auth page (login/register), redirect to login.
-      if (!loggedIn && !onAuthFlow) {
+      // Define the routes that require authentication.
+      final protectedPaths = <String>{
+        AppRoute.wordgrid.path,
+        AppRoute.research.path,
+        AppRoute.scan.path,
+        AppRoute.aiResearch.path,
+        AppRoute.imageScan.path,
+        AppRoute.home.path,
+      };
+
+      // Redirect unauthenticated users trying to access protected routes.
+      if (!loggedIn && protectedPaths.contains(currentPath)) {
         return AppRoute.login.path;
       }
 
-      // If logged in and trying to access login or register, redirect to home.
+      // Prevent authenticated users from visiting login or register pages.
       if (loggedIn && onAuthFlow) {
         return AppRoute.home.path;
       }
-
-      // TODO: Implement protection for other specific routes if needed
-      // Example:
-      // final protectedPaths = [AppRoute.wordgrid.path, AppRoute.research.path, AppRoute.scan.path];
-      // if (!loggedIn && protectedPaths.contains(currentPath)) {
-      //   return AppRoute.login.path;
-      // }
 
       return null; // No redirect needed
     },
