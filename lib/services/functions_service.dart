@@ -60,15 +60,25 @@ class FunctionsService {
       _httpClient = httpClient ?? http.Client();
 
   static String _getDefaultBaseUrl() {
-    // This is a placeholder. In a real app, you'd get this from config.
-    // Or, if you know your project ID and region, you can hardcode it during development.
-    // For demonstration, let's assume a common region.
-    // IMPORTANT: Replace 'YOUR_PROJECT_ID' and ensure 'us-central1' is correct.
-    const String projectId = String.fromEnvironment('FIREBASE_PROJECT_ID', defaultValue: 'YOUR_PROJECT_ID');
-    if (projectId == 'YOUR_PROJECT_ID' && kDebugMode) {
-      print("FunctionsService: FIREBASE_PROJECT_ID environment variable not set. Using placeholder. Function calls will likely fail.");
+    // Reads configuration from --dart-define values.
+    // Example during build or run:
+    // flutter run --dart-define=FIREBASE_PROJECT_ID=your-project-id \
+    //             --dart-define=FIREBASE_REGION=europe-west1
+
+    const String projectId =
+        String.fromEnvironment('FIREBASE_PROJECT_ID', defaultValue: '');
+    const String region =
+        String.fromEnvironment('FIREBASE_REGION', defaultValue: 'us-central1');
+
+    if (projectId.isEmpty) {
+      if (kDebugMode) {
+        print(
+            'FunctionsService: FIREBASE_PROJECT_ID not provided. Cloud function calls will fail.');
+      }
+      return '';
     }
-    return "https://us-central1-$projectId.cloudfunctions.net";
+
+    return 'https://$region-$projectId.cloudfunctions.net';
   }
 
   /// Calls the 'generateDailyChallenge' Firebase Cloud Function.

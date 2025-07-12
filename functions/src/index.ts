@@ -438,75 +438,91 @@ export const generateAiDefinition = functions.https.onRequest(
 
     functions.logger.info(`User ${userId} requested definition for word: "${wordToDefine}"`);
 
-    // TODO: Implement Google Gemini Pro API call
-    // 1. Get API Key from environment variables (e.g., functions.config().gemini.apikey)
-    //    Ensure it's set: firebase functions:config:set gemini.apikey="YOUR_API_KEY"
-    // const apiKey = functions.config().gemini?.apikey;
-    // if (!apiKey) {
-    //   functions.logger.error("Gemini API key not configured.");
-    //   response.status(500).send({ error: { message: "Internal server error: AI service not configured." } });
-    //   return;
-    // }
-    // 2. Construct the prompt for Gemini API.
-    //    Prompt should request all necessary fields:
-    //    - Definitions in German, English, Spanish (C1 level)
-    //    - Min. 2 example sentences per language
-    //    - Min. 3 synonyms
-    //    - Min. 3 collocations
-    //    - Grammar hint (e.g., "Nomen, feminin")
-    //    - Contextual short text (when the word is used)
-    //    - Request output in a structured JSON format if possible, or parseable text.
-
-    // 3. Make the API call to Gemini. (Using a placeholder for now)
-    //    Example using a hypothetical SDK or fetch:
-    //    const geminiResponse = await callGeminiApi(apiKey, prompt, wordToDefine);
-
-    // 4. Parse the Gemini response and map it to AiVocabularyOutput structure.
-
-    // Placeholder for AI response:
     try {
-      // Simulate AI processing time
-      await new Promise((resolve) => setTimeout(resolve, 1500));
+      const apiKey = functions.config().gemini?.apikey;
+      if (!apiKey) {
+        functions.logger.error("Gemini API key not configured.");
+        response.status(500).send({
+          error: {
+            message: "Internal server error: AI service not configured.",
+          },
+        });
+        return;
+      }
 
-      const generatedId = `ai-${wordToDefine.toLowerCase().replace(/\s+/g, "-")}-${Date.now()}`;
+      const prompt =
+        `Create a vocabulary entry for the German word "${wordToDefine}" as JSON with the following fields: ` +
+        `definitions (de,en,es), synonyms (min 3), collocations (min 3), ` +
+        `exampleSentences (de,en,es with two each), grammarHint, contextualText. Respond only with JSON.`;
 
-      const mockAiData: AiVocabularyOutput = {
+      const url =
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${apiKey}`;
+
+      const aiResponse = await fetch(url, {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({
+          contents: [{parts: [{text: prompt}]}],
+        }),
+      });
+
+      if (!aiResponse.ok) {
+        const errorText = await aiResponse.text();
+        functions.logger.error(
+          `Gemini API call failed with status ${aiResponse.status}: ${errorText}`
+        );
+        response.status(500).send({
+          error: {message: "Failed to generate AI definition."},
+        });
+        return;
+      }
+
+      const result = (await aiResponse.json()) as any;
+      const aiText =
+        result?.candidates?.[0]?.content?.parts?.[0]?.text || "";
+
+      if (!aiText) {
+        functions.logger.error("Gemini API returned empty content.");
+        response.status(500).send({
+          error: {message: "AI response was empty."},
+        });
+        return;
+      }
+
+      let parsed: any;
+      try {
+        parsed = JSON.parse(aiText);
+      } catch (parseError) {
+        functions.logger.error("Failed to parse Gemini JSON:", aiText);
+        response.status(500).send({
+          error: {message: "Invalid AI response format."},
+        });
+        return;
+      }
+
+      const generatedId = `ai-${wordToDefine
+        .toLowerCase()
+        .replace(/\s+/g, "-")}-${Date.now()}`;
+
+      const aiData: AiVocabularyOutput = {
         id: generatedId,
         word: wordToDefine,
-        definitions: {
-          de: `Mock Definition für ${wordToDefine} auf Deutsch (C1 Niveau).`,
-          en: `Mock definition for ${wordToDefine} in English (C1 level).`,
-          es: `Definición simulada para ${wordToDefine} en español (nivel C1).`,
-        },
-        synonyms: ["MockSynonym1", "MockSynonym2", "MockSynonym3"],
-        collocations: [`häufig mit ${wordToDefine}`, `${wordToDefine} verwenden`, `typisch für ${wordToDefine}`],
-        exampleSentences: {
-          de: [
-            `Dies ist ein Beispielsatz für ${wordToDefine}.`,
-            `Ein weiterer deutscher Satz, der ${wordToDefine} enthält.`,
-          ],
-          en: [
-            `This is an example sentence for ${wordToDefine}.`,
-            `Another English sentence containing ${wordToDefine}.`,
-          ],
-          es: [
-            `Esta es una frase de ejemplo para ${wordToDefine}.`,
-            `Otra frase en español que contiene ${wordToDefine}.`,
-          ],
-        },
         level: "C1",
-        sourceType: "ai_added", // This should match SourceType enum string representation
-        topicId: "ai_researched", // A generic topic ID for AI-added words
-        grammarHint: "MockGrammar (z.B. Nomen, feminin)",
-        contextualText: `Dieses Wort '${wordToDefine}' wird typischerweise in mock Kontexten verwendet, um seine mock Natur zu unterstreichen.`,
+        sourceType: "ai_added",
+        topicId: "ai_researched",
+        ...parsed,
       };
 
-      functions.logger.info(`Successfully generated mock AI definition for "${wordToDefine}" for user ${userId}`);
-      response.status(200).send(mockAiData);
+      functions.logger.info(
+        `Successfully generated AI definition for "${wordToDefine}" for user ${userId}`
+      );
+      response.status(200).send(aiData);
     } catch (error) {
-      functions.logger.error(`Error during AI generation placeholder for word "${wordToDefine}" for user ${userId}:`, error);
-      // Type guard for error
-      let errorMessage = "Failed to generate AI definition due to an internal error.";
+      functions.logger.error(
+        `Error generating AI definition for word "${wordToDefine}" for user ${userId}:`,
+        error
+      );
+      let errorMessage = "Failed to generate AI definition.";
       if (error instanceof Error) {
         errorMessage = error.message;
       }

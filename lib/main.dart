@@ -36,23 +36,17 @@ Future<void> main() async {
     cacheSizeBytes: Settings.CACHE_SIZE_UNLIMITED, // Optional: adjust cache size
   );
 
-  // TODO: Replace with actual Firebase initialization
-  // This is a placeholder to avoid crashing the app if Firebase is not configured.
-  // In a real app, you would await Firebase.initializeApp() here.
   if (Firebase.apps.isEmpty) {
-    // This is a minimal configuration. Replace with your actual Firebase project settings.
     await Firebase.initializeApp(
       options: const FirebaseOptions(
-        apiKey: "YOUR_API_KEY", // Replace with your actual API key
-        appId: "YOUR_APP_ID", // Replace with your actual App ID
-        messagingSenderId: "YOUR_MESSAGING_SENDER_ID", // Replace with your actual Sender ID
-        projectId: "YOUR_PROJECT_ID", // Replace with your actual Project ID
-        storageBucket: "YOUR_STORAGE_BUCKET", // Optional: if you use Firebase Storage
+        apiKey: String.fromEnvironment('FIREBASE_API_KEY'),
+        appId: String.fromEnvironment('FIREBASE_APP_ID'),
+        messagingSenderId:
+            String.fromEnvironment('FIREBASE_MESSAGING_SENDER_ID'),
+        projectId: String.fromEnvironment('FIREBASE_PROJECT_ID'),
+        storageBucket: String.fromEnvironment('FIREBASE_STORAGE_BUCKET'),
       ),
     );
-    print("Firebase initialized with placeholder options. Replace with your actual Firebase project settings.");
-  } else {
-    print("Firebase already initialized.");
   }
 
 
